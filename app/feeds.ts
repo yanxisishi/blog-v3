@@ -7,7 +7,7 @@ import { getFavicon, getGithubAvatar, getGithubIcon, getOciqGroupAvatar, getOicq
 export default [
 	// #region Clarity
 	{
-		name: '清晰体验',
+		name: '纸鹿楼',
 		desc: '纸鹿学长太强了orz',
 		// @keep-sorted { "keys": ["date"] }
 		entries: [
