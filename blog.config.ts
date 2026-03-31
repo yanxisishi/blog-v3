@@ -9,7 +9,7 @@ const basicConfig = {
 		name: '康可',
 		avatar: 'https://img.yanxisishi.top/images/2026/03/1ebc23b8f8e871461e1664bce4587095.png',
 		email: 'yanxisishi@gmail.com',
-		homepage: 'https://www.zhilu.site/',
+		homepage: 'https://blog.yanxisishi.top/',
 	},
 	copyright: {
 		abbr: 'CC BY-NC-SA 4.0',
