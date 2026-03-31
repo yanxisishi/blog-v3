@@ -7,7 +7,7 @@ const basicConfig = {
 	description: '',
 	author: {
 		name: '康可',
-		avatar: 'https://www.zhilu.site/api/avatar.png',
+		avatar: 'https://img.yanxisishi.top/images/2026/03/1ebc23b8f8e871461e1664bce4587095.png',
 		email: 'yanxisishi@gmail.com',
 		homepage: 'https://www.zhilu.site/',
 	},
@@ -16,11 +16,11 @@ const basicConfig = {
 		name: '署名-非商业性使用-相同方式共享 4.0 国际',
 		url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans',
 	},
-	favicon: 'https://www.zhilu.site/api/icon.png',
+	favicon: 'https://img.yanxisishi.top/blog/images/2026/03/1ebc23b8f8e871461e1664bce4587095.png',
 	language: 'zh-CN',
-	timeEstablished: '2019-07-19',
+	timeEstablished: '2026-03-31',
 	timeZone: 'Asia/Shanghai',
-	url: 'https://blog.zhilu.site/',
+	url: 'https://blog.yansisishi.top/',
 	defaultCategory: '未分类',
 }
 
