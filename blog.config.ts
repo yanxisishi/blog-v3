@@ -16,7 +16,7 @@ const basicConfig = {
 		name: '署名-非商业性使用-相同方式共享 4.0 国际',
 		url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans',
 	},
-	favicon: 'https://img.yanxisishi.top/blog/images/2026/03/1ebc23b8f8e871461e1664bce4587095.png',
+	favicon: 'https://img.yanxisishi.top/images/2026/03/1ebc23b8f8e871461e1664bce4587095.png',
 	language: 'zh-CN',
 	timeEstablished: '2026-03-31',
 	timeZone: 'Asia/Shanghai',

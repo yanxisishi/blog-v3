@@ -7,7 +7,7 @@ import { getFavicon, getGithubAvatar, getGithubIcon, getOciqGroupAvatar, getOicq
 export default [
 	// #region Clarity
 	{
-		name: '前辈楼',
+		name: '纸鹿楼',
 		desc: '纸鹿学长太强了orz',
 		// @keep-sorted { "keys": ["date"] }
 		entries: [
@@ -33,6 +33,29 @@ export default [
 		desc: '每日跪拜名单...',
 		// @keep-sorted { "keys": ["date"] }
 		entries: [
+			{
+				author: 'chen7chen',
+				// sitenick: '大手子',
+				title: '小chen妙妙屋',
+				desc: '取证+攻防',
+				link: 'https://blog.xchstudy.org/',
+				icon: 'https://blog.xchstudy.org/img%5Coutput.png',
+				avatar: 'https://blog.xchstudy.org/img%5Coutput.png',
+				date: '2026-03-31',
+				comment: '大一前端，大二取证，大三攻防，tql哥',
+			},
+			{
+				author: 'Vu1n4bly',
+				sitenick: 'V爷！',
+				title: 'wanTh3flag',
+				desc: 'Web大佬',
+				link: 'https://wanth3f1ag.top/',
+				icon: 'https://wanth3f1ag.top/images/avatar.jpg',
+				avatar: 'https://wanth3f1ag.top/images/avatar.jpg',
+				date: '2026-03-31',
+				comment: '笔记好全好想要，再让我多看一篇吧qwq',
+			},
+			
 		],
 	},
 	// #endregion
