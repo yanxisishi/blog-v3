@@ -8,12 +8,12 @@ export default [
 	// #region Clarity
 	{
 		name: '纸鹿楼',
-		desc: '纸鹿学长太强了orz',
+		desc: '纸鹿姐姐太强了orz',
 		// @keep-sorted { "keys": ["date"] }
 		entries: [
 			// myFeed,
 			{
-				author: '纸鹿学长',
+				author: '纸鹿学姐',
 				sitenick: 'YYDS',
 				title: '纸鹿摸鱼处',
 				desc: '前端大手子',
@@ -23,7 +23,7 @@ export default [
 				avatar: 'https://www.zhilu.site/api/avatar.png',
 				// archs: ['Nuxt', 'Netlify'],
 				date: '2026-03-31',
-				comment: '老学长，技术大佬，前端大手子',
+				comment: '老学姐，技术大佬，前端大手子',
 			},
 		],
 	},
@@ -55,7 +55,16 @@ export default [
 				date: '2026-03-31',
 				comment: '笔记好全好想要，再让我多看一篇吧qwq',
 			},
-			
+						{
+				author: 'Tooki',
+				title: 'wanTh3flag',
+				desc: 'reverse和misc双修',
+				link: 'https://tookiiiii.github.io/',
+				icon: 'https://img.yanxisishi.top/images/2026/04/4c1dc88befc1867335b2e4d29042258a.jpg',
+				avatar: 'https://img.yanxisishi.top/images/2026/04/4c1dc88befc1867335b2e4d29042258a.jpg',
+				date: '2026-04-01',
+				comment: '逆向大手子，但是喜欢装菜，不喜欢带我',
+			},
 		],
 	},
 	// #endregion
