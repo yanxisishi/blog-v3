@@ -20,7 +20,7 @@ const basicConfig = {
 	language: 'zh-CN',
 	timeEstablished: '2026-03-31',
 	timeZone: 'Asia/Shanghai',
-	url: 'https://blog.yansisishi.top/',
+	url: 'https://blog.yanxisishi.top/',
 	defaultCategory: '未分类',
 }
 
