@@ -1,5 +1,5 @@
 ---
-title: 用 github + Vercel 搭建一个 Clarity 主题的个人博客
+title: 用 Github + Vercel 搭建一个 Clarity 主题的个人博客
 description: 记录一下自己花了大半天才搭建好的博客。
 date: 2026-04-01 16:55:27
 updated: 2026-04-01 21:50:27
