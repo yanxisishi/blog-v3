@@ -55,7 +55,7 @@ export default [
 				date: '2026-03-31',
 				comment: '笔记好全好想要，再让我多看一篇吧qwq',
 			},
-						{
+			{
 				author: 'Tooki',
 				title: 'wanTh3flag',
 				desc: 'reverse和misc双修',
