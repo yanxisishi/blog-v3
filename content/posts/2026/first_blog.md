@@ -2,7 +2,7 @@
 title: 用 github + Vercel 搭建一个 Clarity 主题的个人博客
 description: 记录一下自己花了大半天才搭建好的博客。
 date: 2026-04-01 16:55:27
-updated: 2026-04-01 16:55:27
+updated: 2026-04-01 21:50:27
 image: https://img.yanxisishi.top/images/2026/04/1999.png
 categories: [技术]
 tags: [搭建博客]
@@ -125,6 +125,8 @@ s.stop('⌨️ 已通过 Typora 打开文件')
 
 outro(`🎉 开始书写吧！`)
 ```
+
+注：该主题博客中的md文件的名字是路径的一部分，补药用中文！！！
 
 ### 1.6 博客更新
 
