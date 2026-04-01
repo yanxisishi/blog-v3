@@ -84,8 +84,8 @@ export default defineAppConfig({
 				title: '信息',
 				items: [
 					{ icon: 'simple-icons:nuxt', text: `主题: ${pascalCase(name)} ${version}`, url: 'https://github.com/L33Z22L11/blog-v3' },
-					{ icon: 'ph:swatches-bold', text: '主题和组件文档', url: '/theme' },
-					// { icon: 'ph:certificate-bold', text: '陕ICP备2025082251号', url: 'https://beian.miit.gov.cn/' },
+					{ icon: 'ph:swatches-bold', text: '主题和组件文档', url: 'https://blog.zhilu.site/theme' },
+					// { icon: 'ph:certificate-bold', text: '备案', url: 'https://beian.miit.gov.cn/' },
 				],
 			},
 		] satisfies Nav,
