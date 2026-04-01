@@ -36,7 +36,7 @@ const blogConfig = {
 			/** 实践可复用操作经验：工具/系统/部署/排障 */
 			技术: { icon: 'ph:mouse-bold', color: '#33aaff' },
 			/** 编程：代码实现/工程实践/开发方法 */
-			开发: { icon: 'ph:code-bold', color: '#7777ff' },
+			CTF: { icon: 'ph:code-bold', color: '#7777ff' },
 			/** 安全：漏洞/CTF/恶意软件/安全事件分析 */
 			安全: { icon: 'ph:bug-beetle-bold', color: '#ff7733' },
 			/** 思考：观点讨论/复盘反思/行业或产品观察 */
