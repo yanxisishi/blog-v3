@@ -1,8 +1,8 @@
 ---
 title: 前端学习：环境配置和 HTML 详解
 description: 关于我第一次系统地学习前端...
-date: 2026-04-07 16:35:41
-updated: 2026-04-07 16:35:41
+date: 2026-04-10 19:05:41
+updated: 2026-04-10 19:05:41
 image: https://img.yanxisishi.top/images/2026/04/6dae7b1c04bf85bf7590d55e116d1333_720.png
 categories: [前端]
 tags: [前端]
