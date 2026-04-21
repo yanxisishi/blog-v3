@@ -1433,7 +1433,7 @@ ag
 
 但是这里不能用 hackbar 传参，原因是在 HackBar 的输入框里按下回车键换行时，浏览器实际插入的不是纯粹的 Linux 换行符 `\n` ，而是 Windows 风格的**回车换行符 `\r\n`** 。
 
-因此要在 bp 中传入 `cmd=dd%20if%3d%2fflag` 。
+因此要在 bp 中传入 `cmd=c%0aat%20/fl%0aag` 。
 
 ## EZCMD_5
 
