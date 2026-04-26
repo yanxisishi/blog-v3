@@ -1,9 +1,9 @@
 ---
 title: 青岑CTF有关WEB的WP（三）
-description: 
+description: 匆忙上的青岑CTF第三部分
 date: 2026-04-26 19:51:01
 updated: 2026-04-26 19:51:01
-image: 
+image: https://img.yanxisishi.top/images/2026/04/20260426203814880.png
 categories: [CTF]
 tags: [CTF, WP]
 
