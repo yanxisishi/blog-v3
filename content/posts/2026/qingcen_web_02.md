@@ -29,6 +29,8 @@ tags: [CTF, WP]
 
 接下来为了更好理解本题sql注入逻辑，尝试往里面注入一句话木马：
 
+前提：数据库用户需要 FILE 权限、目标目录可写、secure_file_priv 允许。
+
 1. 测试列数：
 
    **Username：**`' or 1 = 1 order by 1#` 
@@ -48,7 +50,7 @@ tags: [CTF, WP]
 
    说明列数为 2 。
 
-   页可以把 `' or 1 = 1 order by 1#` 改成 `admin' order by 1#` ，因为 admin 这个账号是确实存在的，只需要保证去掉 `order by 1` 后的 payload 恒为真就行，所以可以保证报错的原因是列数不对。
+   也可以把 `' or 1 = 1 order by 1#` 改成 `admin' order by 1#` ，因为 admin 这个账号是确实存在的，只需要保证去掉 `order by 1` 后的 payload 恒为真就行，所以可以保证报错的原因是列数不对。
 
 2. 注入一句话木马：
 
@@ -424,7 +426,7 @@ if (isset($_GET['username']) && isset($_GET['password'])) {
    **Username：**`' UNION SELECT 1,database(),3,4#` 
    **Password：**`随意`
 
-   回显 Welcome user ，说明只有一个库 user 。
+   回显 Welcome user ，说明当前库名是 user 。
 
 4. 爆表名：
 
@@ -538,7 +540,7 @@ SQL Error: SELECT * FROM flag WHERE name = ''/**//**/1,group_concat(id,name,pass
    SQL Error: XPATH syntax error: '~user~'
    ```
 
-   证明了报错注入的可行性，也说明了只存在一个库 user
+   证明了报错注入的可行性，也说明当前库名是 user 。
 
 2. 爆表名：
 
@@ -594,7 +596,7 @@ SQL Error: SELECT * FROM flag WHERE name = ''/**//**/1,group_concat(id,name,pass
 
 返回 Illegal SQL injection ，经测试发现是过滤了 select ，优先尝试堆叠注入：
 
-根据上题知道有两个表 employee 和 flag ，首先把 employee 重命名为 employees_bak ，然后把 flag 重命名为 employees，这样后端查询时实际是在有 flag 的表里面查询。
+根据上题知道有两个表 employees 和 flag ，首先把 employees 重命名为 employees_bak ，然后把 flag 重命名为 employees，这样后端查询时实际是在有 flag 的表里面查询。
 
 `'; rename table employees to employees_bak; rename table flag to employees;`
 
@@ -1071,7 +1073,7 @@ Welcome admin. Your secret note is empty.
 
    注册一个 `' UNION SELECT 1,database()#` 的账号，密码随意，然后进入登录页面，查看我的笔记，显示 `user` 。
 
-   说明只有一个库 `user` 。
+   说明当前库名是 user 。
 
 4. 爆表名：
 

