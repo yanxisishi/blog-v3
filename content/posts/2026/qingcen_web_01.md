@@ -6,6 +6,7 @@ updated: 2026-04-21 14:18:31
 image: https://img.yanxisishi.top/images/2026/04/20260421135825273.png
 categories: [CTF]
 tags: [CTF, WP]
+recommend: 6
 ---
 
 ## who'ssti revenge

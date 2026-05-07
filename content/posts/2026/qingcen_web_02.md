@@ -6,6 +6,7 @@ updated: 2026-04-23 12:48:38
 image: https://img.yanxisishi.top/images/2026/04/ae30f83d66cf8d940375a9f41efc3333.png
 categories: [CTF]
 tags: [CTF, WP]
+recommend: 5
 ---
 
 ## EZSQL(万能密码)
