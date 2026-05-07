@@ -6,6 +6,7 @@ updated: 2026-05-04 19:18:44
 image: https://img.yanxisishi.top/images/2026/05/970a3707eec5bd2685dd9b79e6df7efb_720.png
 categories: [CTF]
 tags: [CTF, WP, moectf]
+recommend: 1
 ---
 
 ## Web

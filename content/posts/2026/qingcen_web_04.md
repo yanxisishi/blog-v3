@@ -6,6 +6,7 @@ updated: 2026-05-03 15:47:11
 image: https://img.yanxisishi.top/images/2026/05/ec329fc5f39043d2d5e647235c95cc17_720.png
 categories: [CTF]
 tags: [CTF, WP]
+recommend: 2
 ---
 
 ## basic_14
