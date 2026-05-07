@@ -4,7 +4,7 @@ const basicConfig = {
 	title: '康可ing',
 	subtitle: 'conquer,conquer,conquer...',
 	// 长 description 利好于 SEO
-	description: '',
+	description: '康可ing，一个记录 CTF、Web 安全、前端学习和博客折腾的个人空间，分享学习笔记、比赛 WP、踩坑复盘与技术随想。',
 	author: {
 		name: '康可',
 		avatar: 'https://img.yanxisishi.top/images/2026/03/1ebc23b8f8e871461e1664bce4587095.png',
@@ -74,8 +74,8 @@ const blogConfig = {
 
 	/** 向 <head> 中添加脚本 */
 	scripts: [
-		// 自己部署的 Umami 统计服务
-		{ 'src': 'https://zhi.example.site/zhi.js', 'data-website-id': 'a1997c81-a42b-46f6-8d1d-8fbd67a8ef41', 'defer': true },
+		// Umami Cloud 统计服务
+		{ 'src': 'https://cloud.umami.is/script.js', 'data-website-id': '728f5694-24b5-48ae-98e5-21ba18e1de04', 'defer': true },
 		// 自己网站的 Cloudflare Insights 统计服务
 		{ 'src': 'https://static.cloudflareinsights.com/beacon.min.js', 'data-cf-beacon': '{"token": "97a4fe32ed8240ac8284e9bffaf03962"}', 'defer': true },
 		// Twikoo 评论系统
