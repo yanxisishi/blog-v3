@@ -1,6 +1,6 @@
 ---
-title: 青岑CTF有关moectf2025的部分WP
-description: 其实就是moectf的部分Web和Misc的wp来的
+title: moectf2025部分WP
+description: 主要是Web和Misc的wp
 date: 2026-05-04 19:18:44
 updated: 2026-05-04 19:18:44
 image: https://img.yanxisishi.top/images/2026/05/970a3707eec5bd2685dd9b79e6df7efb_720.png
