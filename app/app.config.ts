@@ -93,7 +93,7 @@ export default defineAppConfig({
 
 	/** 左侧栏顶部 Logo */
 	header: {
-		logo: 'https://img.yanxisishi.top/images/2026/03/1ebc23b8f8e871461e1664bce4587095.png',
+		logo: blogConfig.author.avatar,
 		/** 展示标题文本，否则展示纯 Logo */
 		showTitle: true,
 		subtitle: blogConfig.subtitle,

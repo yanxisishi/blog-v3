@@ -59,7 +59,7 @@ export default [
 				author: 'Tooki',
 				title: 'wanTh3flag',
 				desc: 'reverse和misc双修',
-				link: 'https://tookiiiii.github.io/',
+				link: 'https://tooki-blog.vercel.app/',
 				icon: 'https://img.yanxisishi.top/images/2026/04/4c1dc88befc1867335b2e4d29042258a.jpg',
 				avatar: 'https://img.yanxisishi.top/images/2026/04/4c1dc88befc1867335b2e4d29042258a.jpg',
 				date: '2026-04-01',

@@ -83,7 +83,7 @@ export default defineEventHandler(async (event) => {
 			$version: packageJson.version,
 			_: pascalCase(packageJson.name),
 		},
-		icon: blogConfig.favicon,
+		icon: getUrl(blogConfig.favicon),
 		logo: blogConfig.author.avatar, // Ratio should be 2:1
 		rights: `© ${Temporal.Now.plainDateISO().year.toString()} ${blogConfig.author.name}`,
 		subtitle: blogConfig.subtitle || blogConfig.description,
