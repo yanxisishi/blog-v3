@@ -7,7 +7,7 @@ const basicConfig = {
 	description: '康可ing，一个记录 CTF、Web 安全、前端学习和博客折腾的个人空间，分享学习笔记、比赛 WP、踩坑复盘与技术随想。',
 	author: {
 		name: '康可',
-		avatar: 'https://img.yanxisishi.top/images/2026/03/1ebc23b8f8e871461e1664bce4587095.png',
+		avatar: 'https://q1.qlogo.cn/g?b=qq&nk=3497863696&s=640',
 		email: 'yanxisishi@gmail.com',
 		homepage: 'https://blog.yanxisishi.top/',
 	},
@@ -16,7 +16,7 @@ const basicConfig = {
 		name: '署名-非商业性使用-相同方式共享 4.0 国际',
 		url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans',
 	},
-	favicon: 'https://img.yanxisishi.top/images/2026/03/1ebc23b8f8e871461e1664bce4587095.png',
+	favicon: 'https://q1.qlogo.cn/g?b=qq&nk=3497863696&s=640',
 	language: 'zh-CN',
 	timeEstablished: '2026-03-31',
 	timeZone: 'Asia/Shanghai',
@@ -92,7 +92,7 @@ const blogConfig = {
 /** 用于生成 OPML 和友链页面配置 */
 export const myFeed: FeedEntry = {
 	author: blogConfig.author.name,
-	sitenick: '摸鱼处',
+	sitenick: 'conquering',
 	title: blogConfig.title,
 	desc: blogConfig.subtitle || blogConfig.description,
 	link: blogConfig.url,
