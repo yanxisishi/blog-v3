@@ -3,7 +3,7 @@ title: 0xGame2025 web大部分WP（精简版）
 description: 对于上篇0xGame2025的WP的精练，舒服了
 date: 2026-05-14 22:10:13
 updated: 2026-05-14 22:10:13
-image: https://img.yanxisishi.top/images/2026/05/397594608509708e625583ab4097291a.jpg
+image: https://img.yanxisishi.top/images/2026/05/o4BiZIDSEBxACDJC4NuBfAreCVAiAApgAhR0Ii~tplv-dy-aweme-images_q75.webp
 categories: [CTF]
 tags: [CTF, WP]
 ---
