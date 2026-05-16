@@ -75,6 +75,16 @@ export default [
 				date: '2026-05-15',
 				comment: '其实是算法和CTF双修、pwn和misc双修的大手子',
 			},
+			{
+				author: 'LuooU',
+				title: 'LuooU',
+				desc: '让过程再精彩一些',
+				link: 'https://luoxblack.top',
+				icon: 'https://luoxblack.oss-cn-chengdu.aliyuncs.com/img/png.png',
+				avatar: 'https://luoxblack.oss-cn-chengdu.aliyuncs.com/img/png.png',
+				date: '2026-05-16',
+				comment: '绝对是一个很厉害的web手',
+			},
 		],
 	},
 	// #endregion
