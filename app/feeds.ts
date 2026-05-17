@@ -69,7 +69,7 @@ export default [
 				author: 'ss0t_HACKED',
 				title: 'ss0t_HACKED',
 				desc: '新手pwner欢迎大家拷打',
-				link: 'https://www.cnblogs.com/ASUS-HACKED',
+				link: 'https://blog.ss0t-hacked.top/',
 				icon: 'https://q1.qlogo.cn/g?b=qq&nk=3255154997&s=640',
 				avatar: 'https://q1.qlogo.cn/g?b=qq&nk=3255154997&s=640',
 				date: '2026-05-15',
