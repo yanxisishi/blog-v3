@@ -91,10 +91,19 @@ export default [
 	// #region 知识分享
 	{
 		name: '好友博客',
-		desc: '没有好友，哭了qwq',
+		desc: '康可ing的好友们',
 		// @keep-sorted { "keys": ["date"] }
 		entries: [
-
+			{
+				author: '兔娘',
+				title: '兔娘の機房.',
+				desc: '小さな機房, 大きな夢, and 少しだけ 萌え.',
+				link: 'https://www.moegeek.org/',
+				icon: 'https://q1.qlogo.cn/g?b=qq&nk=3170652106&s=640',
+				avatar: 'https://q1.qlogo.cn/g?b=qq&nk=3170652106&s=640',
+				date: '2026-05-23',
+				comment: '兔娘可爱捏~',
+			},
 		],
 	},
 	// #endregion
