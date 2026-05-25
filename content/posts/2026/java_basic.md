@@ -3,7 +3,7 @@ title: Java 简单语法速成
 description: 为后续Java反序列化基础的学习做点铺垫。
 date: 2026-05-25 18:02:06
 updated: 2026-05-25 18:02:06
-image: https://img.yanxisishi.top/images/2026/05/%E7%88%B1%E6%9D%80%E5%AE%9D%E8%B4%9D.jpg
+image: https://img.yanxisishi.top/images/2026/05/20260525203143279.png
 categories: [Java Sec]
 tags: [Java, Web, Security]
 ---
