@@ -3,7 +3,7 @@ title: Hack The Box流程基础和Tier 0全WP
 description: 记录一下第一次做渗透相关的靶场。
 date: 2026-05-26 21:01:22
 updated: 2026-05-26 21:01:22
-image: 
+image: https://img.yanxisishi.top/images/2026/05/q2-33VVv2dyPgO12Yy73oW3fLwgO2niHsBYomLAWKJg.
 categories: [渗透]
 tags: [渗透, HTB]
 ---
