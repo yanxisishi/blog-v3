@@ -85,6 +85,16 @@ export default [
 				date: '2026-05-16',
 				comment: '绝对是一个很厉害的web手',
 			},
+			{
+				author: '小转风',
+				title: '小转风的CTFwiki',
+				desc: '非常萌新的wiki',
+				link: 'http://ctfwiki.cn/',
+				icon: 'https://img.yanxisishi.top/images/2026/06/b_97abfa02d7ff4bbd28b4d3f55565b552.jpg',
+				avatar: 'https://img.yanxisishi.top/images/2026/06/b_97abfa02d7ff4bbd28b4d3f55565b552.jpg',
+				date: '2026-06-12',
+				comment: '转风哥还是太全能了',
+			},
 		],
 	},
 	// #endregion
