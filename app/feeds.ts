@@ -95,6 +95,16 @@ export default [
 				date: '2026-06-12',
 				comment: '转风哥还是太全能了',
 			},
+			{
+				author: '2_haowen_V',
+				title: '2_haowen_V',
+				desc: '非常萌新的wiki',
+				link: '顺天意,承因果,今日方知我是我',
+				icon: 'https://hehaowen.com.cn/',
+				avatar: 'https://img.hehaowen.com.cn/image/avatar/%E5%8B%87%E5%A4%AA.png',
+				date: '2026-06-14',
+				comment: '学密码的都是✌',
+			},
 		],
 	},
 	// #endregion
