@@ -115,6 +115,16 @@ export default [
 				date: '2026-06-25',
 				comment: '我看未必是废物',
 			},
+			{
+				author: '奶龙大王',
+				title: '奶龙大王',
+				desc: '会点密码的Web手',
+				link: 'https://blog.nldw66.top/',
+				icon: 'https://bee-reg-ab.imagency.cn/p/b9f9381de63efed997c6208a0eb6f696.jpg',
+				avatar: 'https://bee-reg-ab.imagency.cn/p/b9f9381de63efed997c6208a0eb6f696.jpg',
+				date: '2026-07-16',
+				comment: '密码web双修爷',
+			},
 		],
 	},
 	// #endregion
