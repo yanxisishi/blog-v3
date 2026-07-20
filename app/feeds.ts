@@ -125,6 +125,16 @@ export default [
 				date: '2026-07-16',
 				comment: '密码web双修爷',
 			},
+			{
+				author: 'A1right的小窝',
+				title: 'A1right的小窝',
+				desc: '专注 Web 安全、CTF 题解与 Agent 渗透实验的个人博客',
+				link: 'https://itsa1right.ink',
+				icon: 'https://itsa1right.ink/images/a1right-avatar.png',
+				avatar: 'https://itsa1right.ink/images/a1right-avatar.png',
+				date: '2026-07-20',
+				comment: '密码web双修爷',
+			},
 		],
 	},
 	// #endregion
