@@ -133,7 +133,7 @@ export default [
 				icon: 'https://itsa1right.ink/images/a1right-avatar.png',
 				avatar: 'https://itsa1right.ink/images/a1right-avatar.png',
 				date: '2026-07-20',
-				comment: '密码web双修爷',
+				comment: '挖洞大手子',
 			},
 		],
 	},
