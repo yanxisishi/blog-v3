@@ -1164,7 +1164,7 @@ for i in range(1, 100):
 
 然后用这个账号密码进行登录，查看 `我的笔记` 得到 flag。
 
-## ezsql_18(二次注入& Union 联合查询注入)
+## ezsql_19(二次注入& Union 联合查询注入)
 
 仍然是二次注入，但单纯的万能密码无法回显出 flag，需要结合 Union 联合查询注入：
 
@@ -1282,9 +1282,10 @@ for i in range(1, 100):
    账号：-1' union select 1,flag from user.flags --  
    密码：随便填
    ```
-
+   
    返回：
-
+   
    ```txt
    flag{25519142-8d3f-4305-a8a7-7696342c2b13}
    ```
+
