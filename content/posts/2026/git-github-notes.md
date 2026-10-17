@@ -3,7 +3,7 @@ title: Git + GitHub 学习笔记
 description: 刷到了一个不错的 Git 学习视频，正好做一份笔记系统地记录下 Git 相关知识。
 date: 2026-10-12 13:38:22
 updated: 2026-10-17 14:42:22
-image: 
+image: https://img.yanxisishi.top/images/2026/10/20261017150605065.png
 categories: [技术]
 tags: [Git, GitHub, 学习笔记]
 ---
