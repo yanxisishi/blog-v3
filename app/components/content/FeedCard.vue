@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue'
 import type { FeedEntry } from '~/types/feed'
+// eslint-disable-next-line unused-imports/no-unused-imports
 import { Temporal } from 'temporal-polyfill'
 
 const props = defineProps<FeedEntry>()
 
 const appConfig = useAppConfig()
+const mounted = useMounted()
 const route = useRoute()
 const isInspect = computed(() => import.meta.dev && route.query.inspect !== undefined)
 
@@ -19,7 +21,7 @@ function getInspectStyle(src: string): CSSProperties {
 
 	if (src === getMainDomain(props.link))
 		color = 'transparent' // 来自源站
-	else if (src === 'webp.se')
+	else if (src === 'gstatic.cn' || src === 'webp.se')
 		color = 'yellow' // 来自API获取
 	else if (src === 'qlogo.cn')
 		color = 'lightblue' // 来自QQ头像
@@ -37,6 +39,7 @@ function getInspectStyle(src: string): CSSProperties {
 <Tooltip :delay="200" interactive ^role="link" hide-on-click="toggle">
 	<UtilLink
 		class="feed-card gradient-card"
+		data-transition-enter
 		:to="error ? undefined : link"
 		rel="noopener"
 		:data-error="error"
@@ -49,7 +52,7 @@ function getInspectStyle(src: string): CSSProperties {
 			</ClientOnly>
 
 			<NuxtImg v-else class="round-cobblestone" :src="avatar" :alt="author" loading="lazy" />
-			<Icon v-if="appConfig.link.remindNoFeed && !feed" class="no-feed" name="ph:bell-simple-slash-bold" />
+			<Icon v-if="appConfig.link.remindNoFeed && !feed" class="no-feed" name="tabler:bell-off" />
 		</div>
 
 		<span class="author">{{ author }}</span>
@@ -58,7 +61,7 @@ function getInspectStyle(src: string): CSSProperties {
 
 	<template #content>
 		<div class="site-content">
-			<NuxtImg class="site-icon" :src="icon" :alt="title" />
+			<NuxtImg class="site-icon" :src="icon" :alt="title" loading="lazy" />
 
 			<div class="site-info">
 				<h3 class="text-creative">
@@ -78,20 +81,20 @@ function getInspectStyle(src: string): CSSProperties {
 		</div>
 		<div class="desc-content">
 			<div class="date">
-				{{ Temporal.PlainDate.from(date).toLocaleString() }}
+				{{ Temporal.PlainDate.from(date).toLocaleString(mounted ? undefined : appConfig.language) }}
 			</div>
 
 			<p>{{ error ?? desc }}</p>
 
 			<p v-if="comment">
-				<Icon name="ph:chat-centered-dots-bold" /> {{ comment }}
+				<Icon name="tabler:message-dots" /> {{ comment }}
 			</p>
 		</div>
 	</template>
 </Tooltip>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .feed-card {
 	display: flex;
 	align-items: center;
@@ -134,7 +137,7 @@ function getInspectStyle(src: string): CSSProperties {
 	}
 
 	.author {
-		overflow: hidden; // 长词折行
+		overflow: hidden; /* 长词折行 */
 	}
 
 	.sitenick {
@@ -148,11 +151,11 @@ function getInspectStyle(src: string): CSSProperties {
 	}
 }
 
-// https://vue-tippy.netlify.app/props#appendto
-// Tooltip 位于组件根部时，interactive tippy 会插入到父组件
+/* https://vue-tippy.netlify.app/props#appendto */
+/* Tooltip 位于组件根部时，interactive tippy 会插入到父组件 */
 :deep() ~ [data-tippy-root] > .tippy-box {
 	overflow: hidden;
-	overflow: clip; // 需保留气泡箭头
+	overflow: clip; /* 需保留气泡箭头 */
 	padding: 0;
 
 	&[data-placement="top"] > .tippy-svg-arrow {

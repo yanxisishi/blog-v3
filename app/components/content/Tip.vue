@@ -19,7 +19,7 @@ const tip = computed(() => ({
 const tipSource = useTemplateRef('tip-text')
 
 const { copy, copied } = useCopy(tipSource)
-const icon = computed(() => props.icon ?? (copied.value ? 'ph:check-bold' : props.copy && 'ph:copy-bold'))
+const icon = computed(() => props.icon ?? (copied.value ? 'tabler:check' : props.copy && 'tabler:copy'))
 </script>
 
 <template>
@@ -36,7 +36,7 @@ const icon = computed(() => props.icon ?? (copied.value ? 'ph:check-bold' : prop
 </span>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .tip {
 	position: relative;
 	text-decoration: underline dashed var(--c-text-3);

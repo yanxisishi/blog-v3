@@ -3,27 +3,41 @@ const props = defineProps<{
 	totalPages: number
 	expandPages?: number
 	sticky?: boolean
+	avoid?: boolean
 }>()
 
 const page = defineModel<number>({ required: true })
 const pageArr = computed(() => getPaginationIndicator(page.value, props.totalPages, props.expandPages ?? 2))
 
-const layoutStore = useLayoutStore()
-const { panelTranslate } = storeToRefs(layoutStore)
+const paginationEl = useTemplateRef('pagination')
 const anchorEl = useTemplateRef('pagination-anchor')
 const expand = useElementVisibility(anchorEl)
 
-onMounted(() => {
-	panelTranslate.value.pagination = '0, -2em'
-})
+if (props.avoid) {
+	useAvoidTarget(paginationEl, toRef(props, 'avoid'))
+}
 
-onUnmounted(() => {
-	panelTranslate.value.pagination = undefined
-})
+if (import.meta.client) {
+	useEventBus<'capture' | 'finish'>('page-transition').on((phase) => {
+		const element = paginationEl.value
+		if (!element)
+			return
+		if (phase === 'finish') {
+			delete element.dataset.paginationSnapshot
+			element.style.removeProperty('--pagination-offset')
+		}
+		else if (props.sticky && window.matchMedia('(max-width: 768px)').matches) {
+			const { top } = element.getBoundingClientRect()
+			element.dataset.paginationSnapshot = ''
+			element.style.setProperty('--pagination-offset', `${top - element.getBoundingClientRect().top}px`)
+		}
+	})
+}
 </script>
 
 <template>
 <nav
+	ref="pagination"
 	class="pagination"
 	:class="{ sticky, expand }"
 	:aria-label="`第${page}页，共${totalPages}页`"
@@ -32,7 +46,7 @@ onUnmounted(() => {
 	<ZButton
 		:disabled="page <= 1"
 		class="pagination-button rtl-flip"
-		icon="ph:arrow-fat-left-duotone"
+		icon="tabler:arrow-left"
 		aria-label="上一页"
 		@click="page--"
 	/>
@@ -53,7 +67,7 @@ onUnmounted(() => {
 	<ZButton
 		:disabled="page >= totalPages"
 		class="pagination-button rtl-flip"
-		icon="ph:arrow-fat-right-duotone"
+		icon="tabler:arrow-right"
 		aria-label="下一页"
 		@click="page++"
 	/>
@@ -61,7 +75,7 @@ onUnmounted(() => {
 <div ref="pagination-anchor" />
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .pagination {
 	display: flex;
 	max-width: calc(100vw);
@@ -72,6 +86,18 @@ onUnmounted(() => {
 	background-color: var(--ld-bg-card);
 	transition: max-width 0.2s var(--max-bezier-to-full);
 	font-variant-numeric: tabular-nums;
+
+	:root[data-article-transition] & {
+		transition: none !important;
+		view-transition-name: article-pagination;
+
+		/* 保留布局占位，避免移动端快照按大视口重新定位 sticky。 */
+		&[data-pagination-snapshot] {
+			position: relative;
+			bottom: auto;
+			translate: 0 var(--pagination-offset, 0px);
+		}
+	}
 
 	&.sticky {
 		position: sticky;
@@ -112,5 +138,14 @@ onUnmounted(() => {
 			color: var(--c-primary);
 		}
 	}
+}
+
+:global(::view-transition-group(article-pagination)),
+:global(::view-transition-new(article-pagination)) {
+	animation: none;
+}
+
+:global(::view-transition-old(article-pagination)) {
+	display: none;
 }
 </style>

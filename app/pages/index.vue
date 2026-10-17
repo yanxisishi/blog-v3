@@ -7,17 +7,10 @@ useSeoMeta({
 	ogImage: appConfig.author.avatar,
 })
 
-const layoutStore = useLayoutStore()
-layoutStore.setAside(['blog-stats', 'blog-tech'])
-
-const { data: listRaw } = await useAsyncData('index_posts', () => useArticleIndexOptions(), { default: () => [] })
+const { data: listRaw } = await useAsyncData('posts:index', () => queryArticleIndex(), { default: () => [] })
 const { listSorted, isAscending, sortOrder } = useArticleSort(listRaw, { bindDirectionQuery: 'asc', bindOrderQuery: 'sort' })
-const { category, categories, listCategorized } = useCategory(listSorted, { bindQuery: 'category' })
+const { category, categories, listCategorized } = useArticleCategory(listSorted, { bindQuery: 'category' })
 const { page, totalPages, listPaged } = usePagination(listCategorized, { bindQuery: 'page' })
-
-watch(category, () => {
-	page.value = 1
-})
 
 useSeoMeta({ title: () => (page.value > 1 ? `第${page.value}页` : '') })
 
@@ -26,51 +19,60 @@ const listRecommended = computed(() => orderBy(
 	['recommend', 'date'],
 	['desc'],
 ))
+
+const { data: previewCount } = useAsyncData(
+	'previews:count',
+	() => queryCollection('content').where('stem', 'LIKE', 'previews/%').count(),
+)
 </script>
 
 <template>
-<BlogHeader class="mobile-only" to="/" tag="h1" />
-
-<UtilHydrateSafe>
-	<PostSlide v-if="listRecommended.length && page === 1 && !category" :list="listRecommended" />
-
-	<div class="post-list">
-		<PostOrderToggle
-			v-model:is-ascending="isAscending"
-			v-model:sort-order="sortOrder"
-			v-model:category="category"
-			:categories
-		>
-			<ZSecret>
-				<UtilLink to="/preview" class="preview-entrance">
-					<Icon name="ph:file-lock-bold" />
-					查看预览文章
-				</UtilLink>
-			</ZSecret>
-		</PostOrderToggle>
-
-		<TransitionGroup tag="menu" class="proper-height" name="float-in">
-			<PostArticle
-				v-for="article, index in listPaged"
-				:key="article.path"
-				v-bind="article"
-				:to="article.path"
-				:use-updated="sortOrder === 'updated'"
-				:style="getFixedDelay(index * 0.05)"
-			/>
-		</TransitionGroup>
-
-		<ZPagination v-model="page" sticky :total-pages="totalPages" />
-	</div>
-</UtilHydrateSafe>
+<template #aside>
+	<WidgetBlogStats />
+	<WidgetBlogTech />
+	<WidgetCommGroup />
 </template>
 
-<style lang="scss" scoped>
+<BlogHeader class="hide-above-mobile" to="/" tag="h1" />
+
+<PostSlide v-if="listRecommended.length && page === 1 && !category" :list="listRecommended" />
+
+<div class="post-list">
+	<PostOrderToggle
+		v-model:is-ascending="isAscending"
+		v-model:sort-order="sortOrder"
+		v-model:category="category"
+		:categories
+		@update:category="page = 1"
+	>
+		<ZSecret>
+			<UtilLink v-if="previewCount" to="/preview" class="preview-entrance">
+				<Icon name="tabler:shield-lock" />
+				查看预览文章
+			</UtilLink>
+		</ZSecret>
+	</PostOrderToggle>
+
+	<UtilListTransition v-slot="{ items, state }" :items="listPaged" :state="sortOrder">
+		<menu class="proper-height">
+			<PostArticle
+				v-for="article, index in items"
+				:key="article.path"
+				:data-list-key="article.path"
+				v-bind="article"
+				:to="article.path"
+				:use-updated="state === 'updated'"
+				:style="getFixedDelay(index * 0.05)"
+			/>
+		</menu>
+	</UtilListTransition>
+
+	<ZPagination v-model="page" sticky avoid :total-pages="totalPages" />
+</div>
+</template>
+
+<style scoped>
 .post-list {
 	margin: 1rem;
-}
-
-.float-in-leave-to {
-	position: absolute;
 }
 </style>

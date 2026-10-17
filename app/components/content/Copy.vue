@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { createPlainShiki } from 'plain-shiki'
-import { getShikiOptions } from '~/shiki.config'
-
 const props = withDefaults(defineProps<{
 	prompt?: string | boolean
 	code?: string
@@ -16,7 +13,7 @@ const language = computed(() => props.lang ?? getPromptLanguage(props.prompt))
 
 const showUndo = ref(false)
 const codeInput = useTemplateRef('code-input')
-const shikiStore = useShikiStore()
+const shiki = useShiki()
 
 const { copy, copied } = useCopy(codeInput)
 
@@ -41,13 +38,7 @@ function checkUndoable(event: InputEvent) {
 }
 
 onMounted(async () => {
-	const shiki = await shikiStore.load()
-	await shikiStore.loadLang(language.value)
-
-	createPlainShiki(shiki).mount(
-		codeInput.value!,
-		getShikiOptions(language.value),
-	)
+	await shiki.mountPlain(codeInput.value!, language.value)
 })
 </script>
 
@@ -66,20 +57,21 @@ onMounted(async () => {
 	/>
 
 	<button v-if="showUndo" class="operation" aria-label="恢复原始内容" @click="undo">
-		<Icon name="ph:arrow-u-up-left-bold" />
+		<Icon name="tabler:arrow-back-up" />
 	</button>
 
+	<Icon v-show="false" name="tabler:check" />
 	<button class="operation" aria-label="复制" @click="copy()">
-		<Icon :name="copied ? 'ph:check-bold' : 'ph:copy-bold'" />
+		<Icon :name="copied ? 'tabler:check' : 'tabler:copy'" />
 	</button>
 </code>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .copy {
 	contain: paint;
 	display: flex;
-	overflow: auto; // prompt 溢出时滚动
+	overflow: auto; /* prompt 溢出时滚动 */
 	margin: 0.5rem 0;
 	border: 1px solid var(--c-border);
 	border-radius: 4px;

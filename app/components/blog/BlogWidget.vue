@@ -2,33 +2,63 @@
 defineProps<{
 	title?: string
 	card?: boolean
+	shrink?: boolean
+	grayscale?: boolean
 	dim?: boolean
 	bgImg?: string
-	bgRight?: boolean
+	bgAside?: boolean
 }>()
+
+const body = useTemplateRef('widget-body')
+
+defineExpose({ body })
 </script>
 
 <template>
-<section class="blog-widget" :class="{ dim }">
-	<hgroup class="widget-title text-creative">
+<section
+	class="blog-widget"
+	data-transition-enter
+	:class="{ shrink, grayscale, dim }"
+>
+	<hgroup class="widget-header text-creative">
 		<slot name="title">
 			{{ title }}
 		</slot>
+		<span v-if="$slots.action" class="seperator" />
+		<slot name="action" />
 	</hgroup>
 
-	<div class="widget-body" :class="{ 'widget-card': card, 'with-bg': bgImg }">
-		<NuxtImg v-if="bgImg" class="bg-img" :class="{ 'bg-right': bgRight }" :src="bgImg" alt="" />
+	<div
+		ref="widget-body"
+		class="widget-body"
+		:class="{ 'widget-card': card, 'with-bg': bgImg, 'scrollcheck-y scrollbar-hidden': shrink }"
+	>
+		<NuxtImg v-if="bgImg" class="bg-img" :class="{ 'bg-right': bgAside }" :src="bgImg" alt="" />
 		<slot />
 	</div>
 </section>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .blog-widget {
+	flex-shrink: 1;
 	font-size: 0.9em;
 
-	.blog-widget + & {
-		margin-top: 1rem;
+	&.shrink {
+		display: flex;
+		flex-direction: column;
+		overflow: auto;
+	}
+
+	&.grayscale :where(.iconify, img) {
+		transition: filter 0.2s;
+		filter: grayscale(0.8);
+	}
+
+	#blog-aside:hover &.grayscale :where(.iconify, img),
+	&.grayscale :where(.iconify, img):focus-within,
+	#blog-aside.show &.grayscale :where(.iconify, img) {
+		filter: grayscale(0);
 	}
 
 	&.dim {
@@ -43,26 +73,35 @@ defineProps<{
 	}
 }
 
-.widget-title {
+.widget-header {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
 	gap: 0.5rem;
-	margin: 0.5rem;
+	padding: 0.5rem;
 	color: var(--c-text-2);
 
-	a {
+	&:empty {
+		display: none;
+	}
+
+	> .seperator {
+		flex-grow: 1;
+	}
+
+	> :deep(a) {
 		transition: color 0.2s;
 	}
 
-	> [onclick]:hover, > [href]:hover {
+	> :deep(a[href]:hover) {
 		color: var(--c-primary);
 	}
 }
 
 .widget-body {
+	overscroll-behavior: contain;
+
 	&.with-bg {
-		contain: paint; // overflow hidden + position relative
+		contain: paint; /* overflow hidden + position relative */
 		z-index: 0;
 
 		> .bg-img {

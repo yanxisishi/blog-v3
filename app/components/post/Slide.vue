@@ -33,7 +33,7 @@ useEventListener(carouselEl, 'wheel', (e) => {
 	<div class="z-slide-header">
 		<span class="title text-creative">精选文章</span>
 		<div class="at-slide-hover">
-			<Icon name="ph:mouse-simple-bold" />
+			<Icon name="tabler:mouse" />
 			按住 Shift 横向滚动
 		</div>
 	</div>
@@ -65,7 +65,7 @@ useEventListener(carouselEl, 'wheel', (e) => {
 		<ZButton
 			class="carousel-action prev at-slide-hover"
 			aria-label="上一页"
-			icon="ph:caret-left-bold"
+			icon="tabler:chevron-left"
 			tabindex="-1"
 			@click="carouselApi?.scrollPrev()"
 		/>
@@ -73,7 +73,7 @@ useEventListener(carouselEl, 'wheel', (e) => {
 		<ZButton
 			class="carousel-action next at-slide-hover"
 			aria-label="下一页"
-			icon="ph:caret-right-bold"
+			icon="tabler:chevron-right"
 			tabindex="-1"
 			@click="carouselApi?.scrollNext()"
 		/>
@@ -81,7 +81,7 @@ useEventListener(carouselEl, 'wheel', (e) => {
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .z-slide {
 	margin: 1rem;
 
@@ -107,7 +107,7 @@ useEventListener(carouselEl, 'wheel', (e) => {
 	mask-image: linear-gradient(#FFF, transparent);
 	color: var(--c-text-3);
 
-	>.title {
+	> .title {
 		font-size: 3rem;
 		font-weight: bold;
 		line-height: 1;
@@ -154,7 +154,7 @@ useEventListener(carouselEl, 'wheel', (e) => {
 	scroll-snap-align: center;
 	scroll-snap-stop: always;
 
-	// Firefox 图片 alt 为空时 fallback 失效
+	/* Firefox 图片 alt 为空时 fallback 失效 */
 	@supports (-moz-force-broken-image-icon: 1) {
 		background-color: var(--c-border);
 	}
@@ -166,7 +166,7 @@ useEventListener(carouselEl, 'wheel', (e) => {
 		object-fit: cover;
 	}
 
-	>.stable-info, > .hover-info {
+	> .stable-info, > .hover-info {
 		position: absolute;
 		text-align: center;
 		text-shadow: var(--text-shadow-black);
@@ -203,7 +203,7 @@ useEventListener(carouselEl, 'wheel', (e) => {
 	}
 
 	&:hover, &:focus-within {
-		>.stable-info {
+		> .stable-info {
 			opacity: 0;
 		}
 

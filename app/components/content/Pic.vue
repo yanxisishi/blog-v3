@@ -14,14 +14,12 @@ const slots = defineSlots<{
 	caption: () => any
 }>()
 
-const pic = ref()
-const picEl = useCurrentElement<HTMLImageElement>(pic)
-
+const pic = useTemplateRef<HTMLImageElement>('pic')
 const modalStore = useModalStore()
 
 const { open } = modalStore.use(
 	() => h(LazyPopoverLightbox, {
-		el: picEl.value,
+		el: unrefElement(pic)!,
 		caption: props.alt || props.caption || slots.caption,
 	}),
 	{ unique: true },
@@ -47,7 +45,7 @@ const { open } = modalStore.use(
 </figure>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 figcaption {
 	margin-top: -0.5em;
 	font-size: 0.8em;

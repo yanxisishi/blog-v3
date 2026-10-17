@@ -4,20 +4,21 @@ useSeoMeta({
 	title: '预览',
 	description: `${appConfig.title}的文章预览。`,
 })
-const layoutStore = useLayoutStore()
-layoutStore.setAside(['blog-log'])
-
-const { data: listRaw } = await useAsyncData('index_previews', () => useArticleIndexOptions('previews/%'), { default: () => [] })
+const { data: listRaw } = await useAsyncData('previews:index', () => queryArticleIndex('previews/%'), { default: () => [] })
 const { listSorted, isAscending, sortOrder } = useArticleSort(listRaw)
-const { category, categories, listCategorized } = useCategory(listSorted)
+const { category, categories, listCategorized } = useArticleCategory(listSorted)
 </script>
 
 <template>
+<template #aside>
+	<WidgetBlogLog />
+</template>
+
 <div class="preview">
 	<div class="preview-header">
 		<h1>
-			<UtilLink class="mobile-only" to="/" title="返回首页">
-				<Icon name="ph:caret-left-bold" />
+			<UtilLink class="hide-above-mobile" to="/" title="返回首页">
+				<Icon name="tabler:chevron-left" />
 			</UtilLink>预览
 		</h1>
 		<PostOrderToggle
@@ -41,7 +42,7 @@ const { category, categories, listCategorized } = useCategory(listSorted)
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .preview {
 	margin: 1rem;
 }

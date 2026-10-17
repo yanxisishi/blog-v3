@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue'
 
-defineOptions({ inheritAttrs: false })
-
 defineProps<{
 	el: HTMLImageElement
 	caption?: string | Component
@@ -36,13 +34,13 @@ defineEmits<{
 			aria-label="关闭灯箱"
 			@click="$emit('close')"
 		>
-			<Icon name="ph:x-bold" />
+			<Icon name="tabler:x" />
 		</button>
 	</div>
 </Transition>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .tooltip {
 	display: flex;
 	align-items: center;

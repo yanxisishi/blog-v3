@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { escape } from 'es-toolkit/string'
-import { getShikiOptions } from '~/shiki.config'
 
 const props = withDefaults(defineProps<{
 	code?: string
@@ -41,8 +40,7 @@ const byteSize = computed(() => formatBytes(new TextEncoder().encode(props.code)
 
 const codeblock = useTemplateRef('codeblock')
 const { copy, copied } = useCopy(codeblock)
-
-const shikiStore = useShikiStore()
+const shiki = useShiki()
 const rawHtml = ref(escape(props.code))
 
 function getIndent() {
@@ -56,26 +54,12 @@ function getIndent() {
 }
 
 onMounted(async () => {
-	const shiki = await shikiStore.load()
-	await shikiStore.loadLang(props.language)
-	// 处理 Markdown 高亮内代码块中的语言
-	// 加载 TeX 语言有概率导致 LaTeX 语言高亮炸掉
-	if (props.language === 'markdown' || props.language.startsWith('md')) {
-		const mdLangRegex = /^\s*`{3,}(\S+)/gm
-		const langs = Array
-			.from(props.code.matchAll(mdLangRegex), match => match[1])
-			.filter(lang => lang !== undefined)
-		await shikiStore.loadLang(...langs)
-	}
-
-	rawHtml.value = shiki.codeToHtml(
-		props.code.trimEnd(),
-		getShikiOptions(
-			props.language,
-			[compConf.value.enableIndentGuide ? 'ignoreRenderWhitespace' : 'ignoreRenderIndentGuides'],
-			{ meta: { indent: getIndent() } },
-		),
-	)
+	rawHtml.value = await shiki.codeToHtml(props.code.trimEnd(), {
+		language: props.language,
+		transformerOptions: [compConf.value.enableIndentGuide ? 'ignoreRenderWhitespace' : 'ignoreRenderIndentGuides'],
+		shikiOptions: { meta: { indent: getIndent() } },
+		embeddedLanguages: true,
+	})
 })
 </script>
 
@@ -122,14 +106,14 @@ onMounted(async () => {
 		<Icon
 			class="toggle-icon"
 			:class="{ 'is-collapsed': isCollapsed }"
-			name="ph:caret-double-up-bold"
+			name="tabler:chevrons-up"
 		/>
 		<span>{{ rows }} lines, {{ props.code.length }} chars, {{ byteSize }}</span>
 	</button>
 </figure>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .z-codeblock {
 	--line-height: 1.4;
 
@@ -201,7 +185,7 @@ figcaption {
 }
 
 pre {
-	// 如果填写 0 会在 calc() 时出错
+	/* 如果填写 0 会在 calc() 时出错 */
 	--start-offset: 4em;
 
 	padding: 1rem;
@@ -263,7 +247,7 @@ pre {
 		}
 	}
 
-	// 行指示器
+	/* 行指示器 */
 	&::before {
 		content: var(--line-indicator, "") attr(data-line);
 		position: fixed;
@@ -284,7 +268,7 @@ pre {
 
 .toggle-btn {
 	display: block;
-	position: relative; // 移动到 pre 上方
+	position: relative; /* 移动到 pre 上方 */
 	opacity: 0.3;
 	width: 100%;
 	padding: 0.2em;

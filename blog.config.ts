@@ -32,19 +32,18 @@ const blogConfig = {
 
 	article: {
 		categories: {
-			[basicConfig.defaultCategory]: { icon: 'ph:folder-dotted-bold' },
+			[basicConfig.defaultCategory]: { icon: 'tabler:circle-dashed' },
 			/** 实践可复用操作经验：工具/系统/部署/排障 */
-			技术: { icon: 'ph:mouse-bold', color: '#33aaff' },
+			技术: { icon: 'tabler:mouse', color: '#33aaff' },
 			/** 编程：代码实现/工程实践/开发方法 */
-			CTF: { icon: 'ph:code-bold', color: '#7777ff' },
+			CTF: { icon: 'tabler:code', color: '#7777ff' },
 			/** 安全：漏洞/CTF/恶意软件/安全事件分析 */
-			安全: { icon: 'ph:bug-beetle-bold', color: '#ff7733' },
+			安全: { icon: 'tabler:bug', color: '#ff7733' },
 			/** 思考：观点讨论/复盘反思/行业或产品观察 */
-			杂谈: { icon: 'ph:chat-bold', color: '#33bbaa' },
+			杂谈: { icon: 'tabler:message', color: '#33bbaa' },
 			/** 记录叙事：个人经历/校园家庭/日常片段 */
-			生活: { icon: 'ph:shooting-star-bold', color: '#ff7777' },
+			生活: { icon: 'tabler:leaf', color: '#ff7777' },
 		},
-		defaultCategoryIcon: 'ph:folder-bold',
 		/** 文章版式，首个为默认版式 */
 		types: {
 			tech: {},
@@ -79,8 +78,18 @@ const blogConfig = {
 		// 自己网站的 Cloudflare Insights 统计服务
 		{ 'src': 'https://static.cloudflareinsights.com/beacon.min.js', 'data-cf-beacon': '{"token": "97a4fe32ed8240ac8284e9bffaf03962"}', 'defer': true },
 		// Twikoo 评论系统
-		{ src: 'https://lib.baomitu.com/twikoo/1.6.44/twikoo.min.js', defer: true },
+		{ src: 'https://s4.zstatic.net/npm/twikoo@1.7.20/dist/twikoo.min.js', defer: true },
 	],
+
+	/** 文章统计配置 */
+	stats: {
+		/**
+		 * 统计范围，匹配 content 下不含扩展名的路径（stem）；空数组统计全部内容
+		 * 使用 SQL LIKE 语法：% 匹配任意长度字符，_ 匹配单个字符
+		 * 多个范围取并集，如 ['posts/%', 'book/%']
+		 */
+		includePaths: [] as string[],
+	},
 
 	/** 自己部署的 Twikoo 服务 */
 	twikoo: {

@@ -2,13 +2,12 @@
 import type { ArticleProps } from '~/types/article'
 
 defineOptions({ inheritAttrs: false })
+
 const props = defineProps<ArticleProps>()
 
 const appConfig = useAppConfig()
 
 const coverFilter = computed(() => props.meta?.coverFilter || (props.meta?.coverDim && 'brightness(0.75)') || undefined)
-const categoryLabel = computed(() => props.categories?.[0])
-const categoryIcon = computed(() => getCategoryIcon(categoryLabel.value))
 
 const shareText = `【${appConfig.title}】${props.title}\n\n${
 	props.description ? `${props.description}\n\n` : ''}${
@@ -18,16 +17,16 @@ const { copy, copied } = useCopy(shareText)
 </script>
 
 <template>
-<div class="post-header" :class="{ 'has-cover': image }">
+<div class="post-header" :class="{ 'has-cover': image }" :data-transition-key="path" data-transition-enter>
 	<Pic v-if="image" class="post-cover" :src="image" :alt="title" :filter="coverFilter" />
 	<div class="post-nav">
 		<div class="operations">
+			<Icon v-show="false" name="tabler:check" />
 			<ZButton
-				:icon="copied ? 'ph:check-bold' : 'ph:share-bold'"
+				:icon="copied ? 'tabler:check' : 'tabler:share'"
+				text="文字分享"
 				@click="copy()"
-			>
-				文字分享
-			</ZButton>
+			/>
 		</div>
 
 		<div v-if="!meta?.hideInfo" class="post-info">
@@ -36,7 +35,7 @@ const { copy, copied } = useCopy(shareText)
 				v-tip
 				:tip-transform="d => `创建于${d}`"
 				:date
-				icon="ph:pencil-simple-line-bold"
+				icon="tabler:pencil-minus"
 			/>
 
 			<UtilDate
@@ -44,16 +43,16 @@ const { copy, copied } = useCopy(shareText)
 				v-tip
 				:tip-transform="d => `修改于${d}`"
 				:date="updated"
-				icon="ph:clock-counter-clockwise-bold"
+				icon="tabler:clock-edit"
 			/>
 
-			<span v-if="categoryLabel">
-				<Icon :name="categoryIcon" />
-				{{ categoryLabel }}
+			<span v-if="categories">
+				<Icon :name="getCategoryIcon(categories[0])" />
+				{{ categories[0] }}
 			</span>
 
 			<span>
-				<Icon name="ph:paragraph-bold" />
+				<Icon name="tabler:pilcrow" />
 				{{ formatNumber(readingTime?.words) }} 字
 			</span>
 		</div>
@@ -65,9 +64,9 @@ const { copy, copied } = useCopy(shareText)
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .post-header {
-	contain: paint; // overflow hidden + position relative
+	contain: paint; /* overflow hidden + position relative */
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -77,7 +76,7 @@ const { copy, copied } = useCopy(shareText)
 	background-color: var(--c-bg-2);
 	color: var(--c-text);
 
-	@media (max-width: $breakpoint-mobile) {
+	@media (max-width: 768px) {
 		margin: 0;
 		border-radius: 0;
 	}

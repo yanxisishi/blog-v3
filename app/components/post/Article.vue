@@ -3,17 +3,11 @@ import type { ArticleProps } from '~/types/article'
 
 const props = defineProps<{ useUpdated?: boolean } & ArticleProps>()
 
-const appConfig = useAppConfig()
-
 const showAllDate = isTimeDiffSignificant(props.date, props.updated)
-
-const categoryLabel = computed(() => props.categories?.[0])
-const categoryColor = computed(() => appConfig.article.categories[categoryLabel.value!]?.color)
-const categoryIcon = computed(() => getCategoryIcon(categoryLabel.value))
 </script>
 
 <template>
-<UtilLink class="article-card card upraise">
+<UtilLink class="article-card card upraise" :data-transition-key="path" data-transition-enter>
 	<NuxtImg v-if="image" class="article-cover" :src="image" :alt="title" />
 	<article>
 		<h2 class="article-title text-creative">
@@ -28,27 +22,23 @@ const categoryIcon = computed(() => getCategoryIcon(categoryLabel.value))
 			<UtilDate
 				v-if="date && (showAllDate || !useUpdated)"
 				:date
-				icon="ph:pencil-simple-line-bold"
+				icon="tabler:pencil-minus"
 			/>
 
 			<UtilDate
 				v-if="updated && (showAllDate || useUpdated)"
 				:class="{ 'use-updated': useUpdated }"
 				:date="updated"
-				icon="ph:clock-counter-clockwise-bold"
+				icon="tabler:clock-edit"
 			/>
 
-			<span
-				v-if="categoryLabel"
-				class="article-category"
-				:style="{ '--cg-color': categoryColor }"
-			>
-				<Icon :name="categoryIcon" />
-				{{ categoryLabel }}
+			<span v-if="categories" :style="{ color: getCategoryColor(categories[0]) }">
+				<Icon :name="getCategoryIcon(categories[0])" />
+				{{ categories[0] }}
 			</span>
 
 			<span v-if="readingTime?.words" class="article-words">
-				<Icon name="ph:paragraph-bold" />
+				<Icon name="tabler:pilcrow" />
 				{{ formatNumber(readingTime?.words) }}字
 			</span>
 		</div>
@@ -56,14 +46,14 @@ const categoryIcon = computed(() => getCategoryIcon(categoryLabel.value))
 </UtilLink>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .article-card {
 	container-type: inline-size;
 	position: relative;
 	margin: 1em 0;
 	border-radius: 0.8em;
 	color: var(--c-text);
-	animation: float-in 0.2s var(--delay) backwards;
+	animation: float-in var(--motion-duration) var(--motion-easing) var(--delay, 0s) backwards;
 
 	> article {
 		display: grid;
@@ -98,10 +88,6 @@ const categoryIcon = computed(() => getCategoryIcon(categoryLabel.value))
 	color: var(--c-text-2);
 }
 
-.article-category {
-	color: var(--cg-color);
-}
-
 .article-cover {
 	position: absolute;
 	opacity: 0.8;
@@ -123,7 +109,7 @@ const categoryIcon = computed(() => getCategoryIcon(categoryLabel.value))
 		width: 60%;
 	}
 
-	@mixin cover-narrow {
+	@media (max-width: 528px) {
 		position: revert;
 		width: 100%;
 		height: auto;
@@ -141,13 +127,26 @@ const categoryIcon = computed(() => getCategoryIcon(categoryLabel.value))
 			}
 		}
 	}
+}
 
-	@media (max-width: $breakpoint-phone) {
-		@include cover-narrow;
-	}
+@container (max-width: 528px) {
+	.article-cover {
+		position: revert;
+		width: 100%;
+		height: auto;
+		max-width: none;
+		max-height: 256px;
+		aspect-ratio: 2.4;
+		margin-bottom: -10%;
+		mask-image: linear-gradient(#FFF 50%, transparent);
 
-	@container (max-width: #{$breakpoint-phone}) {
-		@include cover-narrow;
+		& + article {
+			width: auto;
+
+			> .article-title {
+				text-shadow: 0 0 0.2em var(--ld-bg-card), 0 0 0.5em var(--ld-bg-card), 0 0 1em var(--ld-bg-card);
+			}
+		}
 	}
 }
 </style>

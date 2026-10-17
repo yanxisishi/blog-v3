@@ -10,7 +10,7 @@ import packageJson from './package.json'
 import redirectList from './redirects.json'
 
 function pluginPath(path: string) {
-	return pathToFileURL(resolve(`./remark-plugins/${path}.ts`)).href
+	return pathToFileURL(resolve(`./remark-plugins/${path}.mjs`)).href
 }
 
 // 此处配置无需修改
@@ -28,14 +28,15 @@ export default defineNuxtConfig({
 				{ rel: 'icon', href: blogConfig.favicon },
 				{ rel: 'alternate', type: 'application/atom+xml', href: '/atom.xml' },
 				{ rel: 'preconnect', href: blogConfig.twikoo.preload },
-				{ rel: 'stylesheet', href: 'https://lib.baomitu.com/KaTeX/0.16.9/katex.min.css', media: 'print', onload: 'this.media="all"' },
-				// "InterVariable", "Inter", "InterDisplay"
-				{ rel: 'stylesheet', href: 'https://rsms.me/inter/inter.css', media: 'print', onload: 'this.media="all"' },
-				// "JetBrains Mono", 思源黑体 "Noto Sans SC", 思源宋体 "Noto Serif SC"
+				{ rel: 'stylesheet', href: 'https://s4.zstatic.net/npm/katex@0.16.44/dist/katex.min.css' },
+				// "InterVariable", "Inter"
+				{ rel: 'stylesheet', href: 'https://s4.zstatic.net/npm/inter-ui@4.1.1/inter-variable.css' },
+				{ rel: 'stylesheet', href: 'https://s4.zstatic.net/npm/inter-ui@4.1.1/inter.css' },
+				// "JetBrains Mono", 思源宋体 "Noto Serif SC"
 				{ rel: 'preconnect', href: 'https://fonts.gstatic.cn', crossorigin: '' },
-				{ rel: 'stylesheet', href: 'https://fonts.googleapis.cn/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Noto+Sans+SC:wght@100..900&family=Noto+Serif+SC:wght@200..900&display=swap', media: 'print', onload: 'this.media="all"' },
-				// 小米字体 "MiSans"
-				{ rel: 'stylesheet', href: 'https://cdn-font.hyperos.mi.com/font/css?family=MiSans:100,200,300,400,450,500,600,650,700,900:Chinese_Simplify,Latin&display=swap', media: 'print', onload: 'this.media="all"' },
+				{ rel: 'stylesheet', href: 'https://fonts.googleapis.cn/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Noto+Serif+SC:wght@200..900&display=swap' },
+				// 抖音美好体 "DOUYINSANSBOLD-GB"
+				{ rel: 'stylesheet', href: 'https://fonts.bytedance.com/dfd/api/v1/css?family=DOUYINSANSBOLD-GB&display=swap' },
 			],
 			templateParams: {
 				separator: '|',
@@ -56,22 +57,18 @@ export default defineNuxtConfig({
 	],
 
 	css: [
-		'@/assets/css/animation.scss',
-		'@/assets/css/article.scss',
-		'@/assets/css/color.scss',
-		'@/assets/css/font.scss',
-		'@/assets/css/main.scss',
-		'@/assets/css/reusable.scss',
+		'@/assets/css/animation.css',
+		'@/assets/css/article.css',
+		'@/assets/css/color.css',
+		'@/assets/css/font.css',
+		'@/assets/css/main.css',
+		'@/assets/css/reusable.css',
 	],
 
 	// @keep-sorted
 	experimental: {
 		extractAsyncDataHandlers: true,
 		typescriptPlugin: true,
-	},
-
-	features: {
-		inlineStyles: false,
 	},
 
 	nitro: {
@@ -87,8 +84,8 @@ export default defineNuxtConfig({
 		...mapValues(redirectList, to => ({ redirect: { to, statusCode: 308 as const } })),
 		'/api/stats': { prerender: true, headers: { 'Content-Type': 'application/json' } },
 		'/atom.xml': { prerender: true, headers: { 'Content-Type': 'application/xml' } },
-		'/favicon.ico': { redirect: { to: '/favicon.png' } },
-		'/zhilu.opml': { prerender: true, headers: { 'Content-Type': 'application/xml' } },
+		'/favicon.ico': { redirect: { to: blogConfig.favicon } },
+		'/subscriptions.opml': { prerender: true, headers: { 'Content-Type': 'application/xml' } },
 	},
 
 	runtimeConfig: {
@@ -116,14 +113,13 @@ export default defineNuxtConfig({
 		},
 	},
 
-	vite: {
-		css: {
-			preprocessorOptions: {
-				scss: {
-					additionalData: '@use "@/assets/css/_variable.scss" as *;',
-				},
-			},
+	postcss: {
+		plugins: {
+			'postcss-nesting': {},
 		},
+	},
+
+	vite: {
 		define: {
 			/** 在生产环境启用 Vue DevTools */
 			// __VUE_PROD_DEVTOOLS__: 'true',
@@ -132,7 +128,7 @@ export default defineNuxtConfig({
 		},
 		optimizeDeps: {
 			// @keep-sorted
-			include: ['@shikijs/colorized-brackets', '@shikijs/transformers', '@unhead/schema-org/vue', '@vue/devtools-core', '@vue/devtools-kit', 'embla-carousel-autoplay', 'embla-carousel-vue', 'embla-carousel-wheel-gestures', 'es-toolkit/array', 'es-toolkit/promise', 'es-toolkit/string', 'minisearch', 'parse-domain', 'plain-shiki', 'shiki/themes/catppuccin-latte.mjs', 'shiki/themes/one-dark-pro.mjs', 'temporal-polyfill', 'vue-tippy'],
+			include: ['@shikijs/colorized-brackets', '@shikijs/transformers', '@unhead/schema-org/vue', '@vue/devtools-core', '@vue/devtools-kit', 'embla-carousel-autoplay', 'embla-carousel-vue', 'embla-carousel-wheel-gestures', 'es-toolkit/array', 'es-toolkit/math', 'es-toolkit/object', 'es-toolkit/promise', 'es-toolkit/string', 'minisearch', 'parse-domain', 'plain-shiki', 'shiki/themes/catppuccin-latte.mjs', 'shiki/themes/one-dark-pro.mjs', 'temporal-polyfill', 'vue-tippy'],
 		},
 		server: {
 			allowedHosts: true,
@@ -144,7 +140,6 @@ export default defineNuxtConfig({
 		'@bikariya/image-viewer',
 		'@bikariya/modals',
 		'@bikariya/shiki',
-		'@nuxt/a11y',
 		'@nuxt/content',
 		'@nuxt/hints',
 		'@nuxt/icon',
@@ -169,7 +164,12 @@ export default defineNuxtConfig({
 				highlight: false,
 				// @keep-sorted
 				remarkPlugins: {
-					[pluginPath('remark-music')]: {},
+					[pluginPath('remark-code-component')]: {
+						options: {
+							'mermaid': { component: 'mermaid', prop: 'code' },
+							'music-abc': { component: 'music-score', prop: 'abc' },
+						},
+					},
 					'remark-math': {},
 					'remark-reading-time': {},
 				},
@@ -183,6 +183,12 @@ export default defineNuxtConfig({
 		},
 		experimental: {
 			sqliteConnector: 'native',
+		},
+	},
+
+	dxup: {
+		features: {
+			namedLayoutSlots: true,
 		},
 	},
 

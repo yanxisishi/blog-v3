@@ -92,7 +92,7 @@ onMounted(() => {
 					aria-label="恢复原始内容"
 					@click="undo()"
 				>
-					<Icon name="ph:arrow-u-up-left-bold" />
+					<Icon name="tabler:arrow-back-up" />
 				</button>
 
 				<ZButton
@@ -110,7 +110,7 @@ onMounted(() => {
 </section>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .z-comment {
 	margin: 3rem 1rem;
 
@@ -161,21 +161,23 @@ onMounted(() => {
 		@supports (corner-shape: squircle) {
 			corner-shape: superellipse(1.2);
 		}
+	}
 
-		&.tk-clickable {
-			cursor: auto;
-		}
+	.tk-avatar.tk-clickable {
+		cursor: auto;
 	}
 
 	.tk-time {
 		color: var(--c-text-3);
 	}
 
+	/* 防止 a 被 overflow hidden */
 	.tk-content {
-		margin-top: 0;
+		margin: -0.2em;
+		padding: 0.2em;
 	}
 
-	.tk-comments-title, .tk-nick > strong {
+	.tk-comments-title, .tk-nick {
 		font-family: var(--font-creative);
 	}
 
@@ -211,6 +213,19 @@ onMounted(() => {
 		overflow: auto;
 		border-radius: 0.5em;
 		font-size: 0.85em;
+	}
+
+	a {
+		margin: -0.1em -0.2em;
+		padding: 0.1em 0.2em;
+		background: linear-gradient(var(--c-primary-soft), var(--c-primary-soft)) no-repeat center bottom / 100% 0.1em;
+		color: var(--c-primary);
+		transition: all 0.2s;
+
+		&:hover {
+			border-radius: 0.3em;
+			background-size: 100% 100%;
+		}
 	}
 
 	p {
