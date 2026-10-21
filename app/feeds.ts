@@ -134,6 +134,16 @@ export default [
 				date: '2026-07-20',
 				comment: '挖洞大手子',
 			},
+			{
+				author: '黄景豪',
+				title: '凝核 Nucleus',
+				desc: '凝而聚之，核而生光。',
+				link: 'https://blog.poachedegg.cn/',
+				feed: 'https://blog.poachedegg.cn/rss.xml',
+				icon: 'https://blog.poachedegg.cn/favicon.svg',
+				avatar: 'https://oss.poachedegg.cn/nucleus-public/images/2026/92453756-a32b-4212-97d8-d71e09ce9661.webp',
+				date: '2026-10-21',
+			},
 		],
 	},
 	// #endregion
