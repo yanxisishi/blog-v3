@@ -143,6 +143,7 @@ export default [
 				icon: 'https://blog.poachedegg.cn/favicon.svg',
 				avatar: 'https://oss.poachedegg.cn/nucleus-public/images/2026/92453756-a32b-4212-97d8-d71e09ce9661.webp',
 				date: '2026-10-21',
+				comment: '蛋总nb',
 			},
 		],
 	},
